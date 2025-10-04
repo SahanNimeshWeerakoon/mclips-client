@@ -11,6 +11,7 @@ import { Input } from '@heroui/input'
 import { Button } from "@heroui/button";
 import { button as buttonStyles, input as inputStyles } from "@heroui/theme";
 import { siteConfig } from "@/config/site";
+import { SelectedGenre } from "../selectedGenre";
 
 export default function Search() {
     const [genres, setGenres] = useState<string[]>(siteConfig.genres);
@@ -19,6 +20,10 @@ export default function Search() {
     const handleGenreSelect = (value: string) => {
         setSelectedGenres(prev => [...prev, value]);
         setGenres(prev => prev.filter(genre => genre !== value));
+    }
+    const handleGenreDeSelect = (value: string) => {
+        setSelectedGenres(prev => prev.filter(genre => genre !== value));
+        setGenres(prev => [...prev, value]);
     }
   return (
     <section>
@@ -58,8 +63,8 @@ export default function Search() {
                 radius="full"
                 color="primary"
             />
-            <div className="flex items-center justify-start">
-                {selectedGenres.map(itm => <p key={itm}>{itm}</p>)}
+            <div className="flex items-center justify-start mt-3 flex-wrap gap-2">
+                {selectedGenres.map(itm => <span key={itm}><SelectedGenre handleClick={() => handleGenreDeSelect(itm)} value={itm} /></span>)}
             </div>
         </div>
       </div>
