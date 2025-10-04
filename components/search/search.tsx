@@ -27,7 +27,7 @@ export default function Search() {
     }
   return (
     <section>
-      <div className="flex gap-10 items-center">
+      <div className="flex gap-10 items-start">
         <Dropdown>
           <DropdownTrigger>
             <Button
