@@ -7,28 +7,54 @@ import {
   NavbarItem,
   NavbarMenuItem,
 } from "@heroui/navbar";
-import { Button } from "@heroui/button";
-import { Kbd } from "@heroui/kbd";
 import { Link } from "@heroui/link";
-import { Input } from "@heroui/input";
-import { link as linkStyles } from "@heroui/theme";
+import { link as linkStyles, button as buttonStyles } from "@heroui/theme";
+import { User } from '@heroui/user'
+import { Button } from "@heroui/button";
 import NextLink from "next/link";
 import clsx from "clsx";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import {
-  TwitterIcon,
-  GithubIcon,
-  DiscordIcon,
-  HeartFilledIcon,
-  SearchIcon,
   Logo,
 } from "@/components/icons";
 
+let isLoggedIn = false;
+
+const AuthButtons = () => {
+  return (
+    <div>
+      {isLoggedIn ? (
+        <User
+          avatarProps={{
+            src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
+          }}
+          description=""
+          name=""
+        />
+
+      ) : (
+        <>
+          <Link
+            className={buttonStyles({
+              color: "primary",
+              radius: "sm",
+              variant: "shadow",
+            })}
+            href="/login"
+          >
+            Login
+          </Link>
+        </>
+      )}
+    </div>
+  );
+}
+
 export const Navbar = () => {
   return (
-    <HeroUINavbar maxWidth="xl" position="sticky">
+    <HeroUINavbar maxWidth="full" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
@@ -36,9 +62,11 @@ export const Navbar = () => {
             <p className="font-bold text-inherit">ACME</p>
           </NextLink>
         </NavbarBrand>
+      </NavbarContent>
+      <NavbarContent className="basis-1/5 sm:basis-full" justify="center">
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
           {siteConfig.navItems.map((item) => (
-            <NavbarItem key={item.href}>
+            <NavbarItem key={item.href} className="flex items-center">
               <NextLink
                 className={clsx(
                   linkStyles({ color: "foreground" }),
@@ -52,6 +80,9 @@ export const Navbar = () => {
             </NavbarItem>
           ))}
         </ul>
+        <Button className={buttonStyles({ color: "secondary", radius: "sm", variant: "shadow" })}>
+          10 Remains
+        </Button>
       </NavbarContent>
 
       <NavbarContent
@@ -60,13 +91,11 @@ export const Navbar = () => {
       >
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
+          <AuthButtons />
         </NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        <Link isExternal aria-label="Github" href={siteConfig.links.github}>
-          <GithubIcon className="text-default-500" />
-        </Link>
         <ThemeSwitch />
         <NavbarMenuToggle />
       </NavbarContent>
