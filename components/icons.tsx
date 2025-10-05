@@ -200,7 +200,7 @@ export const CloseIcon = (props: IconSvgProps) => (
 
 export const DownloadIcon = (props: IconSvgProps) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="21" viewBox="0 0 16 21" fill="none" {...props}>
-    <path d="M11.5 7.22266H13.25C13.7141 7.22266 14.1592 7.40475 14.4874 7.72889C14.8156 8.05303 15 8.49265 15 8.95105V17.9387C15 18.3971 14.8156 18.8367 14.4874 19.1609C14.1592 19.485 13.7141 19.6671 13.25 19.6671H2.75C2.28587 19.6671 1.84075 19.485 1.51256 19.1609C1.18437 18.8367 1 18.3971 1 17.9387V8.95105C1 8.49265 1.18437 8.05303 1.51256 7.72889C1.84075 7.40475 2.28587 7.22266 2.75 7.22266H4.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M4.11133 11.3158L8.00022 15L11.8891 11.3158M8.00022 1V14.2632" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11.5 7.22266H13.25C13.7141 7.22266 14.1592 7.40475 14.4874 7.72889C14.8156 8.05303 15 8.49265 15 8.95105V17.9387C15 18.3971 14.8156 18.8367 14.4874 19.1609C14.1592 19.485 13.7141 19.6671 13.25 19.6671H2.75C2.28587 19.6671 1.84075 19.485 1.51256 19.1609C1.18437 18.8367 1 18.3971 1 17.9387V8.95105C1 8.49265 1.18437 8.05303 1.51256 7.72889C1.84075 7.40475 2.28587 7.22266 2.75 7.22266H4.5" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M4.11133 11.3158L8.00022 15L11.8891 11.3158M8.00022 1V14.2632" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );

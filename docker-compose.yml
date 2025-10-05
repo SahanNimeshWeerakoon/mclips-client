@@ -1,9 +1,7 @@
 version: "3.9"
 services:
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+    build: .
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
@@ -11,3 +9,12 @@ services:
       - /app/node_modules
     ports:
       - "3000:3000"
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+        - action: rebuild
+          path: package.json
+        - action: rebuild
+          path: package-lock.json
