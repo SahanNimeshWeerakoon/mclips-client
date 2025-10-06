@@ -9,17 +9,44 @@ import { siteConfig } from "@/config/site";
 import { SelectedGenre } from "@/components/selectedGenre";
 
 export default function Create() {
-    const [genres, setGenres] = useState<string[]>(siteConfig.genres);
-    const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [genres, setGenres] = useState<string[]>(siteConfig.genres);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const [inputs, setInputs] = useState<{name: string, description: string, video: null | File }>({ name: "", description: "", video: null });
 
-    const handleGenreSelect = (value: string) => {
-        setSelectedGenres(prev => [...prev, value]);
-        setGenres(prev => prev.filter(genre => genre !== value));
-    }
-    const handleGenreDeSelect = (value: string) => {
-        setSelectedGenres(prev => prev.filter(genre => genre !== value));
-        setGenres(prev => [...prev, value]);
-    }
+  const handleGenreSelect = (value: string) => {
+      setSelectedGenres(prev => [...prev, value]);
+      setGenres(prev => prev.filter(genre => genre !== value));
+  }
+  const handleGenreDeSelect = (value: string) => {
+      setSelectedGenres(prev => prev.filter(genre => genre !== value));
+      setGenres(prev => [...prev, value]);
+  }
+
+  const handleInputChange = (value: File | null | string, name: string) => { 
+    setInputs((prev: any) => ({ ...prev, [name]: value }));
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      console.log(e);
+      try {
+        const formData = new FormData();
+        formData.append("name", inputs.name);
+        formData.append("description", inputs.description);
+        formData.append("video", inputs.video as Blob);
+        formData.append("genres", JSON.stringify(selectedGenres));
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/clips/create`, {
+          method: "POST",
+          body: formData,
+        });
+
+        console.log(res);
+      } catch(err) {
+        console.log(err);
+      }
+      // Handle form submission logic here
+  }
 
   return (
     <section className="flex justify-center items-center min-h-screen bg-gray-50">
@@ -29,17 +56,17 @@ export default function Create() {
           <span className="text-default-900">Video</span>
         </h1>
 
-        <form className="space-y-6">
+        <form className="space-y-6" onSubmit={handleSubmit}>
           {/* Movie Name */}
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-700">Movie Name</label>
-            <Input type="text" variant="bordered" size="lg" placeholder="Enter movie name" />
+            <Input type="text" variant="bordered" size="lg" placeholder="Enter movie name" onValueChange={(value: string) => handleInputChange(value, "name")} />
           </div>
 
           {/* Description */}
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-700">Description</label>
-            <Input type="text" variant="bordered" size="lg" placeholder="Enter description" />
+            <Input type="text" variant="bordered" size="lg" placeholder="Enter description" onValueChange={(value: string) => handleInputChange(value, "description")} />
           </div>
 
           {/* Genre Dropdown */}
@@ -87,6 +114,7 @@ export default function Create() {
               className="block w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 
                          file:rounded-lg file:border-0 file:text-sm file:font-medium 
                          file:bg-primary file:text-white hover:file:bg-primary/80"
+              onChange={(e) => handleInputChange(e.target.files ? e.target.files[0] : null, "video")}
             />
           </div>
 
