@@ -18,19 +18,15 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.AZURE_VM_SSH_KEY }}
 
-    - name: Test SSH
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} "echo 'SSH works!'"
-
     - name: Deploy to VM
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} "
           cd ${{ secrets.PROJECT_PATH }} &&
-          cd frontend &&
+          cd mclips-client &&
           git reset --hard &&
           git clean -fd &&
           git pull origin main &&
-          cd ../backend &&
+          cd ../mclips-server &&
           git reset --hard &&
           git clean -fd &&
           git pull origin main &&
