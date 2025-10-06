@@ -28,7 +28,6 @@ export default function Create() {
 
   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      console.log(e);
       try {
         const formData = new FormData();
         formData.append("name", inputs.name);

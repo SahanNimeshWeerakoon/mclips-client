@@ -14,7 +14,7 @@ export default function Home() {
     <section className="container mx-auto py-10 px-5">
       <Search />
       <Videos />
-      <p>puke amaruwa hondaida dan?</p>
+      <p>harida balapan puke amaruwa</p>
       {/* <VideoCropper videoUrl="/video.mp4" /> */}
     </section>
   );
