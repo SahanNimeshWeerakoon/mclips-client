@@ -18,6 +18,10 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.AZURE_VM_SSH_KEY }}
 
+    - name: Test SSH
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} "echo 'SSH works!'"
+
     - name: Deploy to VM
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} "
