@@ -20,23 +20,17 @@ jobs:
 
     - name: Deploy to VM
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
-          cd ${{ secrets.PROJECT_PATH }}
-
-          echo "Pulling latest frontend..."
-          cd mclips-client
-          git reset --hard
-          git clean -fd
-          git pull origin main
-
-          echo "Pulling latest backend..."
-          cd ../mclips-server
-          git reset --hard
-          git clean -fd
-          git pull origin main
-
-          echo "Building and restarting Docker containers..."
-          cd ..
-          docker-compose down
+        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} "
+          cd ${{ secrets.PROJECT_PATH }} &&
+          cd frontend &&
+          git reset --hard &&
+          git clean -fd &&
+          git pull origin main &&
+          cd ../backend &&
+          git reset --hard &&
+          git clean -fd &&
+          git pull origin main &&
+          cd .. &&
+          docker-compose down &&
           docker-compose up --build -d
-        EOF
+        "
