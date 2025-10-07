@@ -26,10 +26,6 @@ jobs:
           git reset --hard &&
           git clean -fd &&
           git pull origin main &&
-          cd ../mclips-server &&
-          git reset --hard &&
-          git clean -fd &&
-          git pull origin main &&
           cd .. &&
           docker-compose down &&
           docker-compose up --build -d
