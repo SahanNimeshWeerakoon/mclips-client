@@ -20,7 +20,7 @@ jobs:
 
     - name: Deploy to VM
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} "
+        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
           cd ${{ secrets.PROJECT_PATH }} &&
           cd mclips-client &&
           git reset --hard &&
@@ -33,4 +33,4 @@ jobs:
           cd .. &&
           docker-compose down &&
           docker-compose up --build -d
-        "
+        EOF
