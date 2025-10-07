@@ -17,15 +17,9 @@ jobs:
 
       - name: Build & Push Frontend
         run: |
-          cd mclips-client
+          cd .
           docker build -t ${{ secrets.DOCKER_USERNAME }}/mclips:client .
           docker push ${{ secrets.DOCKER_USERNAME }}/mclips:client
-
-      - name: Build & Push Backend
-        run: |
-          cd ../mclips-server
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/mclips:server .
-          docker push ${{ secrets.DOCKER_USERNAME }}/mclips:server
 
       - name: Deploy on Azure VM
         uses: webfactory/ssh-agent@v0.9.1
