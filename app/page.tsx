@@ -14,7 +14,7 @@ export default function Home() {
     <section className="container mx-auto py-10 px-5">
       <Search />
       <Videos />
-      <p>kapan mage walla</p>
+      <p>kapan mage walla hutto</p>
       {/* <VideoCropper videoUrl="/video.mp4" /> */}
     </section>
   );
