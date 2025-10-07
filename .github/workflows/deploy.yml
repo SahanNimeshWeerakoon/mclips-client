@@ -1,4 +1,4 @@
-name: Deploy to Azure VM
+name: Build & Deploy to Azure VM
 
 on:
   push:
@@ -8,25 +8,35 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-    - name: Setup SSH
-      uses: webfactory/ssh-agent@v0.9.1
-      with:
-        ssh-private-key: ${{ secrets.AZURE_VM_SSH_KEY }}
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    - name: Deploy to VM
-      run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
-          cd ${{ secrets.PROJECT_PATH }} &&
-          cd mclips-client &&
-          git reset --hard &&
-          git clean -fd &&
-          git pull origin main &&
-          cd .. &&
-          docker-compose down &&
-          docker-compose up --build -d
-        EOF
+      - name: Build & Push Frontend
+        run: |
+          cd mclips-client
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/mclips:client .
+          docker push ${{ secrets.DOCKER_USERNAME }}/mclips:client
+
+      - name: Build & Push Backend
+        run: |
+          cd ../mclips-server
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/mclips:server .
+          docker push ${{ secrets.DOCKER_USERNAME }}/mclips:server
+
+      - name: Deploy on Azure VM
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.AZURE_VM_SSH_KEY }}
+
+      - name: Run containers on VM
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.AZURE_VM_USER }}@${{ secrets.AZURE_VM_IP }} << 'EOF'
+            cd ${{ secrets.PROJECT_PATH }}
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
+          EOF
