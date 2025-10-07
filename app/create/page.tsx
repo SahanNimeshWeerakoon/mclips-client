@@ -35,7 +35,7 @@ export default function Create() {
         formData.append("video", inputs.video as Blob);
         formData.append("genres", JSON.stringify(selectedGenres));
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/clips/create`, {
+        const res = await fetch(`http://20.193.147.237:8080/clips/create`, {
           method: "POST",
           body: formData,
         });
