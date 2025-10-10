@@ -1,4 +1,5 @@
 import {heroui} from "@heroui/theme"
+import { s } from "framer-motion/client";
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -13,6 +14,12 @@ const config = {
         sans: ["var(--font-sans)"],
         mono: ["var(--font-mono)"],
       },
+      colors: {
+        primary: "#F08787",
+        secondary: "#FFC7A7",
+        tertiary: "#FEE2AD",
+        rare: "#F8FAB4"
+      }
     },
   },
   darkMode: "class",
