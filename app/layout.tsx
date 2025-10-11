@@ -5,6 +5,9 @@ import clsx from "clsx";
 
 import { Providers } from "./providers";
 
+import { Provider as ReduxProvider } from "react-redux";
+import { store } from "@/store/store";
+
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
@@ -41,25 +44,27 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="relative flex flex-col h-screen">
-            <Navbar />
-            <main className="flex-grow">
-              {children}
-            </main>
-            <footer className="w-full flex items-center justify-center py-3">
-              <Link
-                isExternal
-                className="flex items-center gap-1 text-current"
-                href="https://heroui.com?utm_source=next-app-template"
-                title="heroui.com homepage"
-              >
-                <span className="text-default-600">Powered by</span>
-                <p className="text-primary">HeroUI</p>
-              </Link>
-            </footer>
-          </div>
-        </Providers>
+        <ReduxProvider store={store}>
+          <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+            <div className="relative flex flex-col h-screen">
+              <Navbar />
+              <main className="flex-grow">
+                {children}
+              </main>
+              <footer className="w-full flex items-center justify-center py-3">
+                <Link
+                  isExternal
+                  className="flex items-center gap-1 text-current"
+                  href="https://heroui.com?utm_source=next-app-template"
+                  title="heroui.com homepage"
+                >
+                  <span className="text-default-600">Powered by</span>
+                  <p className="text-primary">HeroUI</p>
+                </Link>
+              </footer>
+            </div>
+          </Providers>
+        </ReduxProvider>
       </body>
     </html>
   );
