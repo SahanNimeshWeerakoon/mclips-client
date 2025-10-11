@@ -16,7 +16,10 @@ const config = {
       },
       colors: {
         primary: "#F08787",
-        secondary: "#FFC7A7",
+        secondary: {
+          DEFAULT: "#FFC7A7",
+          foreground: "#381E1C",
+        },
         tertiary: "#FEE2AD",
         rare: "#F8FAB4"
       }

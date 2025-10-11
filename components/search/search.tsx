@@ -10,8 +10,10 @@ import { useState } from "react";
 import { Input } from '@heroui/input'
 import { Button } from "@heroui/button";
 import { button as buttonStyles, input as inputStyles } from "@heroui/theme";
+
 import { siteConfig } from "@/config/site";
 import { SelectedGenre } from "../selectedGenre";
+import { CaretDownIcon } from "@/components/icons";
 
 export default function Search() {
     const [genres, setGenres] = useState<string[]>(siteConfig.genres);
@@ -26,17 +28,18 @@ export default function Search() {
         setGenres(prev => [...prev, value]);
     }
   return (
-    <section>
-      <div className="flex gap-10 items-start">
+    <section className="container mx-auto">
+      <div className={`flex gap-10 ${!selectedGenres.length && 'items-center mb-5'}`}>
         <Dropdown>
           <DropdownTrigger>
             <Button
               className={buttonStyles({
                 color: "primary",
-                radius: "sm",
+                radius: "full",
                 variant: "bordered",
                 size: "lg"
               })}
+              endContent={<CaretDownIcon className="text-primary w-20 h-20" />}
             >
               Select Genre
             </Button>
@@ -46,7 +49,6 @@ export default function Search() {
                 selectionMode="multiple"
                 onSelectionChange={(keys) => {
                     const value = Array.from(keys)[0] as string;
-                    // console.log("Selected genres:", selected);
                     handleGenreSelect(value);
                 }}
             >
@@ -55,15 +57,15 @@ export default function Search() {
                     ))}
             </DropdownMenu>
         </Dropdown>
-        <div className="w-full">
+        <div className={`w-full ${!selectedGenres.length && 'flex items-center'}`}>
             <Input
-                label="Email"
+                label="Search"
                 variant="bordered"
                 type="text"
                 radius="full"
                 color="primary"
             />
-            <div className="flex items-center justify-start mt-3 flex-wrap gap-2">
+            <div className="flex items-center justify-start mt-3 flex-wrap gap-2 mb-3">
                 {selectedGenres.map(itm => <span key={itm}><SelectedGenre handleClick={() => handleGenreDeSelect(itm)} value={itm} /></span>)}
             </div>
         </div>

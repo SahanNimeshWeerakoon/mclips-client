@@ -4,18 +4,15 @@ import { Code } from "@heroui/code";
 import { button as buttonStyles } from "@heroui/theme";
 
 import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
 import Search from "@/components/search/search";
 import { Videos } from "@/components/video/videos";
 import VideoCropper from "@/components/video/videoCropper";
 
 export default function Home() {
   return (
-    <section className="container mx-auto py-10 px-5">
+    <section className="mx-auto py-10 px-10">
       <Search />
       <Videos />
-      <p>kapan mage walla hutto</p>
-      {/* <VideoCropper videoUrl="/video.mp4" /> */}
     </section>
   );
 }

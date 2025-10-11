@@ -12,9 +12,14 @@ interface SelectedGenreProps {
 
 export const SelectedGenre = ({ value, handleClick }: SelectedGenreProps) => {
   return (
-    <Button radius="full" className="flex justify-between items-center" color="secondary" onPress={handleClick}>
+    <Button
+      radius="full"
+      color="secondary"
+      onPress={handleClick}
+      className="flex justify-between items-center"
+      endContent={<CloseIcon className="w-3 h-3 text-black" />}
+    >
       {value}
-      <CloseIcon />
     </Button>
   );
 };
