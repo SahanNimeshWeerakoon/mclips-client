@@ -5,7 +5,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  token: typeof window !== undefined ? localStorage.getItem("token") : null,
+  token: typeof window !== "undefined" ? localStorage.getItem("token") : null,
 };
 
 const authSlice = createSlice({

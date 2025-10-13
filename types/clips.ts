@@ -2,5 +2,6 @@ export type Clip {
     id?: string;
     name: string;
     description?: string;
-    url: string;
+    video: string;
+    genres?: string[];
 }

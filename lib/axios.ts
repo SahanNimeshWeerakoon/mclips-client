@@ -3,7 +3,7 @@ import { store } from '@/store/store'
 import { logout } from '@/store/authSlice'
 
 const axiosInstance = axios.create({
-  baseURL: process.env.VITE_API_BASE_URL as string,
+  baseURL: process.env.NEXT_PUBLIC_API_URL as string,
   headers: {
     'Content-Type': 'application/json',
   },
