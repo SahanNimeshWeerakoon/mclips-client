@@ -1,4 +1,4 @@
-export type Clip {
+export type Clip = {
     id?: string;
     name: string;
     description?: string;
