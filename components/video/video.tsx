@@ -12,6 +12,7 @@ import {
   ModalFooter,
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
+import VideoCropper from "./videoCropper";
 
 interface VideoProps {
   src: string;        // video file URL
@@ -38,11 +39,13 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
 
   return (
     <>
-      <a className="flex flex-col w-64" href="#" onClick={open}>
-        <div
-          className="relative w-full h-36 overflow-hidden rounded-lg cursor-pointer"
+      <div className="flex flex-col w-64">
+        <a
+          href="#"
+          onClick={open}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          className="relative w-full h-36 overflow-hidden rounded-lg cursor-pointer"
         >
           <video
             ref={videoRef}
@@ -52,7 +55,7 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
             muted
             loop
           />
-        </div>
+        </a>
         <div className="flex items-center justify-between">
           <p className="mt-2 text-center font-medium">{title}</p>
           <Link>
@@ -69,11 +72,7 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
                 </ModalHeader>
 
                 <ModalBody>
-                  <p>
-                    This modal is built using <strong>@heroui/modal</strong>. It
-                    supports transitions, backdrops, and responsive design out of
-                    the box.
-                  </p>
+                  <VideoCropper videoUrl={`${process.env.NEXT_PUBLIC_API_URL}/clips/proxy?blobName=${src}`} />
                 </ModalBody>
 
                 <ModalFooter>
@@ -88,7 +87,7 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
             )}
           </ModalContent>
         </Modal>
-      </a>
+      </div>
     </>
   );
 };
