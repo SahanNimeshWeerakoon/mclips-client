@@ -15,10 +15,17 @@ jobs:
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+      # - name: Build & Push Frontend
+      #   run: |
+      #     cd .
+      #     docker build -t ${{ secrets.DOCKER_USERNAME }}/mclips:client .
+      #     docker push ${{ secrets.DOCKER_USERNAME }}/mclips:client
       - name: Build & Push Frontend
         run: |
-          cd .
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/mclips:client .
+          cd mclips-client
+          docker build \
+            --build-arg NEXT_PUBLIC_API_URL=http://20.193.147.237:8080 \
+            -t ${{ secrets.DOCKER_USERNAME }}/mclips:client .
           docker push ${{ secrets.DOCKER_USERNAME }}/mclips:client
 
       - name: Deploy on Azure VM
