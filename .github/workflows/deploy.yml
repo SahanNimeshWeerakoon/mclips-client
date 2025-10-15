@@ -22,7 +22,7 @@ jobs:
       #     docker push ${{ secrets.DOCKER_USERNAME }}/mclips:client
       - name: Build & Push Frontend
         run: |
-          cd mclips-client
+          cd .
           docker build \
             --build-arg NEXT_PUBLIC_API_URL=http://20.193.147.237:8080 \
             -t ${{ secrets.DOCKER_USERNAME }}/mclips:client .
