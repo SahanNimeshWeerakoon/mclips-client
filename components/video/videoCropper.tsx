@@ -213,16 +213,11 @@ export default function VideoCropper({videoUrl}: {videoUrl: string }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 p-8">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8 flex items-center gap-3">
-          <Crop className="w-8 h-8" />
-          Video Cropper
-        </h1>
-
+    <div className="w-full">
+      <div className="mx-auto">
         {videoUrl && (
-          <div className="bg-gray-800 rounded-lg p-6">
-            <div ref={containerRef} className="relative inline-block">
+          <div className="w-full rounded-lg p-6">
+            <div ref={containerRef} className="relative w-full inline-block">
               <video
                 ref={videoRef}
                 src={videoUrl}
@@ -236,7 +231,7 @@ export default function VideoCropper({videoUrl}: {videoUrl: string }) {
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp}
-                className="max-w-full border border-gray-700 cursor-crosshair"
+                className="w-full border border-gray-700 cursor-crosshair"
               />
             </div>
 
@@ -259,7 +254,7 @@ export default function VideoCropper({videoUrl}: {videoUrl: string }) {
               </button>
             </div>
 
-            <div className="mt-6 p-4 bg-gray-700 rounded-lg">
+            {/* <div className="mt-6 p-4 bg-gray-700 rounded-lg">
               <h3 className="text-white font-semibold mb-2">Crop Settings:</h3>
               <div className="grid grid-cols-2 gap-4 text-gray-300 text-sm">
                 <div>X: {Math.round(cropArea.x)}px</div>
@@ -267,13 +262,7 @@ export default function VideoCropper({videoUrl}: {videoUrl: string }) {
                 <div>Width: {Math.round(cropArea.width)}px</div>
                 <div>Height: {Math.round(cropArea.height)}px</div>
               </div>
-            </div>
-
-            <div className="mt-4 p-4 bg-yellow-900/30 border border-yellow-600 rounded-lg">
-              <p className="text-yellow-200 text-sm">
-                <strong>Note:</strong> This demo downloads a single frame. For full video processing, you'll need to integrate FFmpeg.wasm to process the entire video with the crop filter.
-              </p>
-            </div>
+            </div> */}
           </div>
         )}
       </div>

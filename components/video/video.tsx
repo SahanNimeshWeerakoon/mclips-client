@@ -72,7 +72,9 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
                 </ModalHeader>
 
                 <ModalBody>
-                  <VideoCropper videoUrl={`${process.env.NEXT_PUBLIC_API_URL}/clips/proxy?blobName=${src}`} />
+                  <div className="w-full h-[80vh] overflow-y-scroll">
+                    <VideoCropper videoUrl={`${process.env.NEXT_PUBLIC_API_URL}/clips/proxy?blobName=${src}`} />
+                  </div>
                 </ModalBody>
 
                 <ModalFooter>
