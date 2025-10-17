@@ -5,7 +5,7 @@ import { Download, Crop, Play, Pause } from 'lucide-react';
 
 export default function VideoCropper({videoUrl}: {videoUrl: string }) {
   // const [videoUrl, setVideoUrl] = useState('');
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [cropArea, setCropArea] = useState({ x: 50, y: 50, width: 300, height: 200 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragType, setDragType] = useState<any>(null);
@@ -216,8 +216,8 @@ export default function VideoCropper({videoUrl}: {videoUrl: string }) {
     <div className="w-full">
       <div className="mx-auto">
         {videoUrl && (
-          <div className="w-full rounded-lg p-6">
-            <div ref={containerRef} className="relative w-full inline-block">
+          <div className="w-full rounded-lg">
+            <div ref={containerRef} className="relative w-full inline-block bg-black">
               <video
                 ref={videoRef}
                 src={videoUrl}
@@ -231,7 +231,7 @@ export default function VideoCropper({videoUrl}: {videoUrl: string }) {
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp}
-                className="w-full border border-gray-700 cursor-crosshair"
+                className="w-[60%] ml-[20%] cursor-crosshair"
               />
             </div>
 

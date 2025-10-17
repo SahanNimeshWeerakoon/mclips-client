@@ -63,15 +63,15 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
           </Link>
         </div>
 
-        <Modal isOpen={isOpen} size="full" onOpenChange={setIsOpen} backdrop="blur">
+        <Modal isOpen={isOpen} classNames={{base: ['w-[75%] max-w-full'], backdrop: ['bg-black/50']}} onOpenChange={setIsOpen} backdrop="blur">
           <ModalContent>
             {(onClose) => (
               <>
-                <ModalHeader className="flex flex-col gap-1">
+                <ModalHeader className="flex flex-col gap-1 font-bold">
                   {title}
                 </ModalHeader>
 
-                <ModalBody>
+                <ModalBody className="p-0">
                   <div className="w-full h-[80vh] overflow-y-scroll">
                     <VideoCropper videoUrl={`${process.env.NEXT_PUBLIC_API_URL}/clips/proxy?blobName=${src}`} />
                   </div>
