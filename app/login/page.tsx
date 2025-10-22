@@ -48,7 +48,7 @@ export default function SignIn() {
       </div>
 
       {/* Right side - Sign in form */}
-      <div className="w-[30%] min-w-[400px]">
+      <div className="w-[80%] lg:w-[30%] min-w-[400px]">
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-12 py-16">
           <div className="flex justify-between items-start mb-10">
             <div>
