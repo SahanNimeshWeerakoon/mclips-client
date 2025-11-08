@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { GoogleIcon } from "@/components/icons";
+import axiosInstance from "@/lib/axios";
 
 export default function SignIn() {
   const [username, setUsername] = useState("");
@@ -14,6 +15,11 @@ export default function SignIn() {
       : "url('/light-background.png')";
 
   const handleSignIn = () => {
+    axiosInstance.post('/auth/signin', { username, password })
+      .then(response => {
+        console.log("Sign in successful:", response.data);
+      })
+      .catch((err: any) => console.error(err));
     console.log("Sign in with:", { username, password });
   };
 
@@ -34,14 +40,6 @@ export default function SignIn() {
         backgroundPosition: "center",
       }}
     >
-      {/* Theme toggle button */}
-      <button
-        onClick={toggleTheme}
-        className="absolute top-4 right-4 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg text-sm"
-      >
-        Toggle {theme === "dark" ? "Light" : "Dark"} Mode
-      </button>
-
       {/* Left side - Logo */}
       <div className="flex-1">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white"></h1>

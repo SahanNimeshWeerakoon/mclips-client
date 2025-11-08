@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
@@ -9,7 +11,7 @@ import {
 } from "@heroui/navbar";
 import { Link } from "@heroui/link";
 import { link as linkStyles, button as buttonStyles } from "@heroui/theme";
-import { User } from '@heroui/user'
+import { UserButton, SignInButton, useUser } from "@clerk/nextjs";
 import { Button } from "@heroui/button";
 import NextLink from "next/link";
 import clsx from "clsx";
@@ -20,39 +22,9 @@ import {
   Logo,
 } from "@/components/icons";
 
-let isLoggedIn = false;
-
-const AuthButtons = () => {
-  return (
-    <div>
-      {isLoggedIn ? (
-        <User
-          avatarProps={{
-            src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-          }}
-          description=""
-          name=""
-        />
-
-      ) : (
-        <>
-          <Link
-            className={buttonStyles({
-              color: "primary",
-              radius: "sm",
-              variant: "shadow",
-            })}
-            href="/login"
-          >
-            Login
-          </Link>
-        </>
-      )}
-    </div>
-  );
-}
-
 export const Navbar = () => {
+  const { isSignedIn } = useUser();
+
   return (
     <HeroUINavbar maxWidth="full" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -91,7 +63,11 @@ export const Navbar = () => {
       >
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
-          <AuthButtons />
+          {isSignedIn ? (
+            <UserButton />
+          ) : (
+            <SignInButton />
+          )}
         </NavbarItem>
       </NavbarContent>
 
