@@ -1,3 +1,22 @@
 import { MongoClient } from "mongodb"; 
+import { MONGODB_URI } from '@/src/env'
 
-// const uri = process.env.
+let client;
+let clientPromise: Promise<MongoClient>;
+
+declare global {
+    var _mongoClientPromise: Promise<MongoClient> | undefined
+}
+
+if (process.env.NODE_ENV === "development") {
+  if (!global._mongoClientPromise) {
+    client = new MongoClient(MONGODB_URI);
+    global._mongoClientPromise = client.connect();
+  }
+  clientPromise = global._mongoClientPromise;
+} else {
+  client = new MongoClient(MONGODB_URI);
+  clientPromise = client.connect();
+}
+
+export default clientPromise;
