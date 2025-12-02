@@ -1,6 +1,5 @@
 "use client"
-import { Button } from "@heroui/button";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 
 import { Video } from "./video";
 import axiosInstance from "@/lib/axios";

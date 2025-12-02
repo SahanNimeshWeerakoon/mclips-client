@@ -1,4 +1,6 @@
 "use client";
+import Search from "@/components/search/search";
+import { Videos } from "@/components/video/videos";
 import { useUser } from "@clerk/nextjs";
 import useSWR from "swr";
 
@@ -26,6 +28,8 @@ export default function Home() {
 
   return (
     <section className="mx-auto py-10 px-10">
+      <Search />
+      <Videos />
       <ul>
         <li>
           Video 1 <button onClick={handleDownload}>Download</button>
