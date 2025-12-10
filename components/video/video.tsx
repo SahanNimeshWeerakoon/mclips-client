@@ -12,7 +12,7 @@ import {
   ModalFooter,
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
-import VideoCropper from "./videoCropper";
+import VideoCropper from "./VideoCropper";
 
 interface VideoProps {
   src: string;        // video file URL

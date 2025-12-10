@@ -1,6 +1,6 @@
 "use client";
 import Search from "@/components/search/search";
-import { Videos } from "@/components/video/videos";
+import { Videos } from "@/components/video/Videos";
 import { useUser } from "@clerk/nextjs";
 import useSWR from "swr";
 

@@ -1,19 +1,21 @@
 "use client"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { Video } from "./video";
+import { Video } from "./Video";
 import axiosInstance from "@/lib/axios";
-import { useAppDispatch, useAppSelector } from "@/store/store";
-import { setAllClips } from "@/store/clipSlice";
+// import { useAppDispatch, useAppSelector } from "@/store/store";
+// import { setAllClips } from "@/store/clipSlice";
 
 export const Videos = () => {
-  const dispatch = useAppDispatch();
-  const clips = useAppSelector(state => state.clips.clips);
+  const [clips, setClips] = useState<{id: string; video: string; name: string;}[]>([]);
+  // const dispatch = useAppDispatch();
+  // const clips = useAppSelector(state => state.clips.clips);
   useEffect(() => {
     try {
       const fetchClips = async () => {
         const response = await axiosInstance.get('/clips/search');
-        dispatch(setAllClips(response.data));
+        // dispatch(setAllClips(response.data));
+        setClips(response.data);
       }
       fetchClips();
     } catch(err) {
