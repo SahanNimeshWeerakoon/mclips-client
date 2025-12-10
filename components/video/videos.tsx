@@ -13,9 +13,9 @@ export const Videos = () => {
   useEffect(() => {
     try {
       const fetchClips = async () => {
-        const response = await axiosInstance.get('/clips/search');
+        const response = await axiosInstance.get('/api/video/search');
         // dispatch(setAllClips(response.data));
-        setClips(response.data);
+        setClips(response.data.data);
       }
       fetchClips();
     } catch(err) {

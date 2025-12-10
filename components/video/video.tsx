@@ -63,7 +63,9 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
           </Link>
         </div>
 
-        <Modal isOpen={isOpen} classNames={{base: ['w-[75%] max-w-full'], backdrop: ['bg-black/50']}} onOpenChange={setIsOpen} backdrop="blur">
+        <Modal isOpen={isOpen} size="full"
+        // classNames={{base: ['w-[75%] max-w-full'], backdrop: ['bg-black/50']}}
+        onOpenChange={setIsOpen} backdrop="blur">
           <ModalContent>
             {(onClose) => (
               <>

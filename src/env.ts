@@ -16,6 +16,8 @@ const env = schema.parse({
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 });
 
+console.log(env.MONGODB_URI);
+
 export const ARCJET_KEY = env.ARCJET_KEY;
 export const MONGODB_URI = env.MONGODB_URI;
 export const MONGODB_DB_NAME = env.MONGODB_DB_NAME;
