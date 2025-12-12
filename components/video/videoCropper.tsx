@@ -11,7 +11,7 @@ export default function VideoCroppper({ videoUrl }: Props) {
   return (
     <div className="w-full h-full relative">
       <div className="absolute top-0 bottom-0 left-0 right-0 bg-secondary/50 z-20">
-        <div className="border border-2">
+        <div className="border border-2 overflow-hidden w-full h-full">
           <video src={videoUrl} />
         </div>
       </div>
