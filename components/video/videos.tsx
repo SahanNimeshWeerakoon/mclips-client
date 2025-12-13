@@ -7,7 +7,7 @@ import axiosInstance from "@/lib/axios";
 // import { setAllClips } from "@/store/clipSlice";
 
 export const Videos = () => {
-  const [clips, setClips] = useState<{id: string; video: string; name: string;}[]>([]);
+  const [clips, setClips] = useState<{_id: string; video: string; name: string;}[]>([]);
   // const dispatch = useAppDispatch();
   // const clips = useAppSelector(state => state.clips.clips);
   useEffect(() => {
@@ -27,7 +27,7 @@ export const Videos = () => {
     <div className="flex flex-wrap justify-start items-center gap-5">
       {
         clips.length ?
-        clips.map(clip => <span key={clip.id}><Video src={clip.video} thumbnail="/light-background.png" title={clip.name} /></span>) :
+        clips.map(clip => <span key={clip._id+clip.name}><Video src={clip.video} thumbnail="/light-background.png" title={clip.name} /></span>) :
         <div className="text-center text-red">No clips found</div>}
     </div>
   );

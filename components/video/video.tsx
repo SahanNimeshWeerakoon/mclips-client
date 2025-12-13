@@ -75,7 +75,7 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
 
                 <ModalBody className="p-0">
                   <div className="w-full h-[80vh] overflow-y-scroll">
-                    <VideoCropper videoUrl={src} />
+                    <VideoCropper videoUrl="/video.mp4" />
                   </div>
                 </ModalBody>
 
