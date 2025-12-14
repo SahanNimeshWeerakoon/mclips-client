@@ -7,6 +7,10 @@ const nextConfig = {
         };
         return config;
     },
+    devIndicators: {
+        buildActivity: false,
+        
+    }
 };
 
 module.exports = nextConfig;

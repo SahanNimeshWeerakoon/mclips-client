@@ -13,6 +13,7 @@ import {
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
 import VideoCropper from "./VideoCropper";
+import CropRatios from "../cropBox/CropRatios";
 
 interface VideoProps {
   src: string;        // video file URL
@@ -80,12 +81,12 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
                 </ModalBody>
 
                 <ModalFooter>
-                  <Button color="secondary" variant="light" onPress={onClose}>
-                    Close
-                  </Button>
-                  <Button color="primary" onPress={close}>
-                    Confirm
-                  </Button>
+                  <div className="flex justify-between w-full p-10">
+                    <CropRatios />
+                    <Button color="primary" onPress={close}>
+                      Confirm
+                    </Button>
+                  </div>
                 </ModalFooter>
               </>
             )}
