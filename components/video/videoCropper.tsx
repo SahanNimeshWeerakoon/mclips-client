@@ -21,7 +21,7 @@ export default function VideoCroppper({ videoUrl }: Props) {
         <div className="overlay"></div>
 
         <CropBox>
-          <div className="border">test</div>
+          <div className="border shadow-[0_0_0_9999px_rgba(0,0,0,0.25)]">test</div>
         </CropBox>
       </div>
   );
