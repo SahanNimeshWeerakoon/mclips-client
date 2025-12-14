@@ -10,7 +10,7 @@ export default function VideoCroppper({ videoUrl }: Props) {
   const [croppedVideoUrl, setCroppedVideoUrl] = useState<string | null>(null);
 
   return (
-      <div className="cropper">
+      <div className="cropper relative h-full overflow-hidden">
         {/* <img src="/dark-background.jpg" /> */}
         <video
           // controls
@@ -21,7 +21,7 @@ export default function VideoCroppper({ videoUrl }: Props) {
         <div className="overlay"></div>
 
         <CropBox>
-          <div className="border shadow-[0_0_0_9999px_rgba(0,0,0,0.25)]">test</div>
+          <div className="w-full h-full border shadow-[0_0_0_9999px_rgba(0,0,0,0.25)]">test</div>
         </CropBox>
       </div>
   );
