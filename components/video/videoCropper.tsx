@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CropBox from "@/components/cropBox/CropBox";
 
 interface Props {
@@ -8,9 +8,19 @@ interface Props {
 
 export default function VideoCroppper({ videoUrl }: Props) {
   const [croppedVideoUrl, setCroppedVideoUrl] = useState<string | null>(null);
+  const [videoHeight, setVideoHeight] = useState<number>(0);
+
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (videoContainerRef.current) {
+      console.log(videoContainerRef.current);
+      setVideoHeight(videoContainerRef.current.clientHeight);
+    }
+  }, []);
 
   return (
-      <div className="cropper relative h-full overflow-hidden">
+      <div className="cropper relative h-full overflow-hidden" ref={videoContainerRef}>
         {/* <img src="/dark-background.jpg" /> */}
         <video
           // controls
@@ -20,14 +30,7 @@ export default function VideoCroppper({ videoUrl }: Props) {
 
         <div className="overlay"></div>
 
-        <CropBox>
-          <div className="relative w-full h-full border border-white shadow-[0_0_0_9999px_rgba(0,0,0,0.25)]">
-            <span className="tl absolute w-3 h-3 bg-white"></span>
-            <span className="tr absolute w-3 h-3 bg-white"></span>
-            <span className="bl absolute w-3 h-3 bg-white"></span>
-            <span className="br absolute w-3 h-3 bg-white"></span>
-          </div>
-        </CropBox>
+        <CropBox videoHeight={videoHeight} />
       </div>
   );
 } 
