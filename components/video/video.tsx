@@ -81,22 +81,13 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
 
                 <ModalBody className="p-0">
                   <div className="w-full h-[80vh] overflow-y-scroll">
-                    <VideoCropper outputUrl={outputUrl} setOutputUrl={setOutputUrl} ref={videoCropperRef} videoUrl="/video.mp4" />
+                    <VideoCropper title={title} ref={videoCropperRef} videoUrl="/video.mp4" />
                   </div>
                 </ModalBody>
 
                 <ModalFooter>
                   <div className="flex justify-between w-full p-10">
                     <CropRatios />
-                    {outputUrl && (
-                      <a
-                        href={outputUrl}
-                        download="cropped.mp4"
-                        className="block text-blue-500 underline"
-                      >
-                        Download Cropped Video
-                      </a>
-                    )}
                     <Button color="primary" onPress={() => {videoCropperRef.current?.cropVideo()}}>
                       Download
                     </Button>

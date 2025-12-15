@@ -4,28 +4,22 @@ import { useEffect, useState } from 'react';
 import { Rnd } from 'react-rnd'
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
+import { Crop } from '@/types/clips';
 
 interface Props {
     videoHeight: number;
     videoWidth: number;
-}
-
-type CropDimensions = {
-    width: number | string;
-    height: number | string;
-    x: number | string;
-    y: number | string;
+    crop: Crop;
+    setCrop: Function;
 }
 
 const DEFAULT_WIDTH = 200;
 const DEFAULT_HEIGHT = 200;
 
-export default function CropBox({ videoHeight, videoWidth }: Props) {
-    const [cropperDimensions, setCropperDimenssions] = useState<CropDimensions>({ width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT, x: 0, y: 0 });
+export default function CropBox({ crop, setCrop, videoHeight, videoWidth }: Props) {
     const selectedCropRatio = useSelector((state: RootState) => state.crop.ratio);
 
     useEffect(() => {
-        console.log({ selectedCropRatio });
         let height = videoHeight ?? DEFAULT_HEIGHT;
         let width = videoHeight ? videoHeight/2 : DEFAULT_WIDTH
 
@@ -39,15 +33,15 @@ export default function CropBox({ videoHeight, videoWidth }: Props) {
             }
         }
 
-        setCropperDimenssions(prev => ({ ...prev, height, width  }));
+        setCrop((prev: Crop) => ({ ...prev, height, width  }));
     }, [videoHeight, selectedCropRatio]);
 
     return (
         <Rnd
-            size={{ width: cropperDimensions.width, height: cropperDimensions.height }}
-            position={{ x: cropperDimensions.x as number, y: cropperDimensions.y as number }}
-            onDragStop={(_, d) => setCropperDimenssions(prev => ({...prev, x: d.x, y: d.y}))}
-            onResizeStop={(_, __, ref, ___, position) => setCropperDimenssions(prev => ({...prev, width: ref.style.width, height: ref.style.height, ...position }))}
+            size={{ width: crop.width, height: crop.height }}
+            position={{ x: crop.x as number, y: crop.y as number }}
+            onDragStop={(_, d) => setCrop((prev: Crop) => ({...prev, x: d.x, y: d.y}))}
+            onResizeStop={(_, __, ref, ___, position) => setCrop((prev: Crop) => ({...prev, width: ref.style.width, height: ref.style.height, ...position }))}
             enableResizing={{ top: true, right: true, bottom: true, left: true, topRight: true, bottomRight: true, bottomLeft: true, topLeft: true }}
         >
             <div className="relative w-full h-full border border-white shadow-[0_0_0_9999px_rgba(0,0,0,0.25)]">

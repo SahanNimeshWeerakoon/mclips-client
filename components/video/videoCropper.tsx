@@ -1,20 +1,17 @@
   "use client"
-  import { forwardRef, SetStateAction, useEffect, useImperativeHandle, useRef, useState } from "react";
-  import CropBox from "@/components/cropBox/CropBox";
+  import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
   import { FFmpeg } from "@ffmpeg/ffmpeg"
   import { fetchFile } from "@ffmpeg/util"
+
+  import CropBox from "@/components/cropBox/CropBox";
 import { Crop, VideoSize } from "@/types/clips";
-import { Dispatch } from "@reduxjs/toolkit";
 
   interface Props {
     videoUrl: string;
-    outputUrl: string | null;
-    setOutputUrl: Function;
+    title: string;
   }
 
-  // const ffmpeg = new FFmpeg.createFFmpeg();
-
-  const VideoCropper = forwardRef(({ videoUrl, setOutputUrl }: Props, ref) => {
+  const VideoCropper = forwardRef(({ videoUrl, title }: Props, ref) => {
     const [ready, setReady] = useState<boolean>(false);
     const [videoSize, setVideoSize] = useState<VideoSize>({ width: 0, height: 0 });
     const [crop, setCrop] = useState<Crop>({ width: 200, height: 200, x: 0, y: 0 });
@@ -55,7 +52,7 @@ import { Dispatch } from "@reduxjs/toolkit";
       const bytes = new Uint8Array(data.length);
       bytes.set(data as Uint8Array);
       const url = URL.createObjectURL(new Blob([bytes], { type: "video/mp4" }));
-      setOutputUrl(url);
+      Object.assign(document.createElement('a'), { href: url, style: 'display:none', download:  `${title}_cropped.mp4` }).click();
     }
 
     useImperativeHandle(ref, () => ({
@@ -89,14 +86,9 @@ import { Dispatch } from "@reduxjs/toolkit";
           onLoadedMetadata={onLoadedMetadata}
         />
         <div className="overlay"></div>
-        <CropBox videoWidth={videoSize.width} videoHeight={videoSize.height} />
-        <p>puka</p>
+        <CropBox crop={crop} setCrop={setCrop} videoWidth={videoSize.width} videoHeight={videoSize.height} />
       </div>
     );
   });
 
   export default VideoCropper;
-
-  // export default function VideoCroppper({ videoUrl }: Props) {
-    
-  // } 
