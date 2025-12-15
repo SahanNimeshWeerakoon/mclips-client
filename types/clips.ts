@@ -5,3 +5,17 @@ export type Clip = {
     video: string;
     genres?: string[];
 }
+
+export type VideoSize = {
+    width: number;
+    height: number;
+}
+
+export type Crop = VideoSize & {
+    x: number;
+    y: number;
+}
+
+export interface VideoCropperHandle {
+    cropVideo: () => void;
+}

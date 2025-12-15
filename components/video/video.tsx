@@ -14,6 +14,7 @@ import {
 import { Button } from "@heroui/button";
 import VideoCropper from "./VideoCropper";
 import CropRatios from "../cropBox/CropRatios";
+import { VideoCropperHandle } from "@/types/clips";
 
 interface VideoProps {
   src: string;        // video file URL
@@ -23,6 +24,7 @@ interface VideoProps {
 
 export const Video = ({ src, thumbnail, title }: VideoProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const videoCropperRef = useRef<VideoCropperHandle>(null);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -76,15 +78,15 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
 
                 <ModalBody className="p-0">
                   <div className="w-full h-[80vh] overflow-y-scroll">
-                    <VideoCropper videoUrl="/video.mp4" />
+                    <VideoCropper ref={videoCropperRef} videoUrl="/video.mp4" />
                   </div>
                 </ModalBody>
 
                 <ModalFooter>
                   <div className="flex justify-between w-full p-10">
                     <CropRatios />
-                    <Button color="primary" onPress={close}>
-                      Confirm
+                    <Button color="primary" onPress={() => {videoCropperRef.current?.cropVideo()}}>
+                      Download
                     </Button>
                   </div>
                 </ModalFooter>
