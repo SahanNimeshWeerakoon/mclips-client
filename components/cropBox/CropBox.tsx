@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { Rnd } from 'react-rnd'
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
 interface Props {
     videoHeight: number;
+    videoWidth: number;
 }
 
 type CropDimensions = {
@@ -14,12 +17,30 @@ type CropDimensions = {
     y: number | string;
 }
 
-export default function CropBox({ videoHeight }: Props) {
-    const [cropperDimensions, setCropperDimenssions] = useState<CropDimensions>({ width: 200, height: 200, x: 0, y: 0 });
+const DEFAULT_WIDTH = 200;
+const DEFAULT_HEIGHT = 200;
+
+export default function CropBox({ videoHeight, videoWidth }: Props) {
+    const [cropperDimensions, setCropperDimenssions] = useState<CropDimensions>({ width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT, x: 0, y: 0 });
+    const selectedCropRatio = useSelector((state: RootState) => state.crop.ratio);
 
     useEffect(() => {
-        setCropperDimenssions(prev => ({...prev, height: videoHeight ?? 200, width: videoHeight ? videoHeight/2 : 100 }));
-    }, [videoHeight]);
+        console.log({ selectedCropRatio });
+        let height = videoHeight ?? DEFAULT_HEIGHT;
+        let width = videoHeight ? videoHeight/2 : DEFAULT_WIDTH
+
+        if(selectedCropRatio) {
+            if(selectedCropRatio[0] > selectedCropRatio[1]) {
+                width = videoWidth ? videoWidth : DEFAULT_WIDTH;
+                height = (width / selectedCropRatio[0]) * selectedCropRatio[1];
+            } else {
+                height = videoHeight ? videoHeight : DEFAULT_HEIGHT;
+                width = (height / selectedCropRatio[1]) * selectedCropRatio[0];
+            }
+        }
+
+        setCropperDimenssions(prev => ({ ...prev, height, width  }));
+    }, [videoHeight, selectedCropRatio]);
 
     return (
         <Rnd

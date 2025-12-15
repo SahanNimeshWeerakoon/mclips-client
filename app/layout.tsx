@@ -1,127 +1,81 @@
-import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import { Link } from "@heroui/link";
 import clsx from "clsx";
-
 import { ClerkProvider } from "@clerk/nextjs";
 
 import { Providers } from "./providers";
-
-
 import { siteConfig } from "@/config/site";
-
 import { fontSans } from "@/config/fonts";
-
 import { Navbar } from "@/components/navbar";
+import ReduxProvider from "@/store/ReduxProvider";
 
-
+import "@/styles/globals.css";
 
 export const metadata: Metadata = {
-
   title: {
-
     default: siteConfig.name,
-
     template: `%s - ${siteConfig.name}`,
-
   },
-
   description: siteConfig.description,
-
   icons: {
-
     icon: "/favicon.ico",
-
   },
-
 };
-
-
 
 export const viewport: Viewport = {
-
   themeColor: [
-
     { media: "(prefers-color-scheme: light)", color: "white" },
-
     { media: "(prefers-color-scheme: dark)", color: "black" },
-
   ],
-
 };
 
-
-
-export default function RootLayout({
-
-  children,
-
-}: {
-
-  children: React.ReactNode;
-
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
 
   return (
-
     <ClerkProvider>
-
       <html suppressHydrationWarning lang="en">
-
         <head />
-
         <body
-
           className={clsx(
-
             "min-h-screen text-foreground bg-background font-sans antialiased",
-
             fontSans.variable,
-
           )}
-
         >
+          <ReduxProvider>
+            <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+              <div className="relative flex flex-col h-screen">
 
-          <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+                <Navbar />
 
-            <div className="relative flex flex-col h-screen">
+                <main className="flex-grow">{children}</main>
 
-              <Navbar />
+                <footer className="w-full flex items-center justify-center py-3">
 
-              <main className="flex-grow">{children}</main>
+                  <Link
 
-              <footer className="w-full flex items-center justify-center py-3">
+                    isExternal
 
-                <Link
+                    className="flex items-center gap-1 text-current"
 
-                  isExternal
+                    href="https://heroui.com?utm_source=next-app-template"
 
-                  className="flex items-center gap-1 text-current"
+                    title="heroui.com homepage"
 
-                  href="https://heroui.com?utm_source=next-app-template"
+                  >
 
-                  title="heroui.com homepage"
+                    <span className="text-default-600">Powered by</span>
 
-                >
+                    <p className="text-primary">HeroUI</p>
 
-                  <span className="text-default-600">Powered by</span>
+                  </Link>
 
-                  <p className="text-primary">HeroUI</p>
+                </footer>
 
-                </Link>
-
-              </footer>
-
-            </div>
-
-          </Providers>
-
+              </div>
+            </Providers>
+          </ReduxProvider>
         </body>
-
       </html>
-
     </ClerkProvider>
-
   );
-
 }
