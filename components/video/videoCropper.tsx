@@ -1,21 +1,23 @@
   "use client"
-  import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+  import { forwardRef, SetStateAction, useEffect, useImperativeHandle, useRef, useState } from "react";
   import CropBox from "@/components/cropBox/CropBox";
   import { FFmpeg } from "@ffmpeg/ffmpeg"
   import { fetchFile } from "@ffmpeg/util"
 import { Crop, VideoSize } from "@/types/clips";
+import { Dispatch } from "@reduxjs/toolkit";
 
   interface Props {
     videoUrl: string;
+    outputUrl: string | null;
+    setOutputUrl: Function;
   }
 
   // const ffmpeg = new FFmpeg.createFFmpeg();
 
-  const VideoCropper = forwardRef(({ videoUrl }: Props, ref) => {
+  const VideoCropper = forwardRef(({ videoUrl, setOutputUrl }: Props, ref) => {
     const [ready, setReady] = useState<boolean>(false);
     const [videoSize, setVideoSize] = useState<VideoSize>({ width: 0, height: 0 });
     const [crop, setCrop] = useState<Crop>({ width: 200, height: 200, x: 0, y: 0 });
-    const [outputUrl, setOutputUrl] = useState<string | null>(null);
 
     const videoRef = useRef<HTMLVideoElement>(null);
     const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -28,7 +30,6 @@ import { Crop, VideoSize } from "@/types/clips";
     }
 
     const cropVideo = async () => {
-      console.log("Crop my ass");
       const ffmpeg = ffmpegRef.current;
       if(!ready) return;
 
@@ -51,9 +52,10 @@ import { Crop, VideoSize } from "@/types/clips";
       ]);
 
       const data = await ffmpeg.readFile("output.mp4");
-      // const bytes = new Uint8Array(data);
-      // const url = URL.createObjectURL(new Blob([data], { type: "video/mp4" }));
-      console.log(data);
+      const bytes = new Uint8Array(data.length);
+      bytes.set(data as Uint8Array);
+      const url = URL.createObjectURL(new Blob([bytes], { type: "video/mp4" }));
+      setOutputUrl(url);
     }
 
     useImperativeHandle(ref, () => ({
@@ -88,6 +90,7 @@ import { Crop, VideoSize } from "@/types/clips";
         />
         <div className="overlay"></div>
         <CropBox videoWidth={videoSize.width} videoHeight={videoSize.height} />
+        <p>puka</p>
       </div>
     );
   });
