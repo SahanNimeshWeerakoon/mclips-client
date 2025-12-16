@@ -17,14 +17,11 @@ export default function SignIn() {
   const handleSignIn = () => {
     axiosInstance.post('/auth/signin', { username, password })
       .then(response => {
-        console.log("Sign in successful:", response.data);
       })
       .catch((err: any) => console.error(err));
-    console.log("Sign in with:", { username, password });
   };
 
   const handleGoogleSignIn = () => {
-    console.log("Sign in with Google");
   };
 
   const toggleTheme = () => {

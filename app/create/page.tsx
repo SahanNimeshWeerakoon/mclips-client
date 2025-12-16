@@ -40,9 +40,7 @@ export default function Create() {
           body: formData,
         });
 
-        console.log(res);
       } catch(err) {
-        console.log(err);
       }
       // Handle form submission logic here
   }
@@ -90,7 +88,6 @@ export default function Create() {
                         selectionMode="multiple"
                         onSelectionChange={(keys) => {
                             const value = Array.from(keys)[0] as string;
-                            // console.log("Selected genres:", selected);
                             handleGenreSelect(value);
                         }}
                     >

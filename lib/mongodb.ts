@@ -7,7 +7,6 @@ let clientPromise: Promise<MongoClient>;
 declare global {
     var _mongoClientPromise: Promise<MongoClient> | undefined
 }
-console.log("MONGODB_URI", MONGODB_URI);
 if (process.env.NODE_ENV === "development") {
   if (!global._mongoClientPromise) {
     client = new MongoClient(MONGODB_URI);

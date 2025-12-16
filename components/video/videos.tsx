@@ -19,7 +19,6 @@ export const Videos = () => {
       }
       fetchClips();
     } catch(err) {
-      console.log(err);
     }
   }, []);
 

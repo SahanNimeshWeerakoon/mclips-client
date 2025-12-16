@@ -15,7 +15,6 @@ export default function SignUp() {
       : "url('/light-background.png')";
 
   const handleSignUp = () => {
-    console.log("Sign up with:", { email, username, contactNumber, password });
   };
 
   const toggleTheme = () => {

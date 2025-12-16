@@ -41,8 +41,6 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
     videoRef.current!.currentTime = 0; // reset to start
   };
 
-  useEffect(() => {console.log({outputUrl});}, [outputUrl]);
-
   return (
     <>
       <div className="flex flex-col w-64">

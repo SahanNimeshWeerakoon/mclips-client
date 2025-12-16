@@ -5,6 +5,7 @@
 
   import CropBox from "@/components/cropBox/CropBox";
 import { Crop, VideoSize } from "@/types/clips";
+import { getDisplayedVideoRect } from "@/lib/functions/videoCrop";
 
   interface Props {
     videoUrl: string;
@@ -13,7 +14,7 @@ import { Crop, VideoSize } from "@/types/clips";
 
   const VideoCropper = forwardRef(({ videoUrl, title }: Props, ref) => {
     const [ready, setReady] = useState<boolean>(false);
-    const [videoSize, setVideoSize] = useState<VideoSize>({ width: 0, height: 0 });
+    const [cssVideoSize, setCssVideoSize] = useState<VideoSize>({ width: 0, height: 0 });
     const [crop, setCrop] = useState<Crop>({ width: 200, height: 200, x: 0, y: 0 });
 
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -23,7 +24,7 @@ import { Crop, VideoSize } from "@/types/clips";
     const onLoadedMetadata = () => {
       if(!videoRef.current || !videoContainerRef.current) return;
       const rect = videoContainerRef.current.getBoundingClientRect();
-      setVideoSize({ width: rect.width, height: rect.height });
+      setCssVideoSize({ width: rect.width, height: rect.height });
     }
 
     const cropVideo = async () => {
@@ -32,14 +33,16 @@ import { Crop, VideoSize } from "@/types/clips";
 
       ffmpeg.writeFile("input.mp4", await fetchFile(videoUrl));
 
-      const video = videoRef.current!;
-      const scaleX = video.videoWidth / videoSize.width;
-      const scaleY = video.videoHeight / videoSize.height;
+      const { videoWidth, videoHeight, videoOffsetX, videoOffsetY } = getDisplayedVideoRect(videoRef.current!, videoContainerRef.current!);
 
-      const cx = Math.round(crop.x * scaleX);
-      const cy = Math.round(crop.y * scaleY);
-      const cw = Math.round(crop.width * scaleX);
-      const ch = Math.round(crop.height * scaleY);
+      const video = videoRef.current!;
+      const scaleX = video.videoWidth / videoWidth;
+      const scaleY = video.videoHeight / videoHeight;
+
+      const cx = Math.ceil(crop.x - videoOffsetX) * videoOffsetX;
+      const cy = Math.ceil(crop.y - videoOffsetY) * videoOffsetY;
+      const cw = Math.ceil(crop.width * scaleX);
+      const ch = Math.ceil(crop.height * scaleY);
 
       await ffmpeg.exec([
         "-i", "input.mp4",
@@ -61,7 +64,7 @@ import { Crop, VideoSize } from "@/types/clips";
 
     useEffect(() => {
       if (videoContainerRef.current) {
-        setVideoSize({ width: videoContainerRef.current.clientWidth, height: videoContainerRef.current.clientHeight });
+        setCssVideoSize({ width: videoContainerRef.current.clientWidth, height: videoContainerRef.current.clientHeight });
       }
 
       const load = async () => {
@@ -86,7 +89,7 @@ import { Crop, VideoSize } from "@/types/clips";
           onLoadedMetadata={onLoadedMetadata}
         />
         <div className="overlay"></div>
-        <CropBox crop={crop} setCrop={setCrop} videoWidth={videoSize.width} videoHeight={videoSize.height} />
+        <CropBox crop={crop} setCrop={setCrop} videoWidth={cssVideoSize.width} videoHeight={cssVideoSize.height} />
       </div>
     );
   });
