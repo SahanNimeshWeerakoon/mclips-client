@@ -5,8 +5,8 @@ export function getDisplayedVideoRect(
   const cw = container.clientWidth;
   const ch = container.clientHeight;
 
-  const vw = video.videoWidth;
-  const vh = video.videoHeight;
+  const vw = video.clientWidth;
+  const vh = video.clientHeight;
 
   const videoAR = vw / vh;
   const containerAR = cw / ch;
@@ -18,12 +18,12 @@ export function getDisplayedVideoRect(
     videoWidth = cw;
     videoHeight = cw / videoAR;
     videoOffsetX = 0;
-    videoOffsetY = (ch - videoHeight) / 2;
+    videoOffsetY = (ch - vh) / 2;
   } else {
     // letterbox left/right
     videoHeight = ch;
     videoWidth = ch * videoAR;
-    videoOffsetX = (cw - videoWidth) / 2;
+    videoOffsetX = (cw - vw) / 2;
     videoOffsetY = 0;
   }
 

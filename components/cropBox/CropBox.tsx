@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Rnd } from 'react-rnd'
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
@@ -41,7 +41,9 @@ export default function CropBox({ crop, setCrop, videoHeight, videoWidth }: Prop
             size={{ width: crop.width, height: crop.height }}
             position={{ x: crop.x as number, y: crop.y as number }}
             onDragStop={(_, d) => setCrop((prev: Crop) => ({...prev, x: d.x, y: d.y}))}
-            onResizeStop={(_, __, ref, ___, position) => setCrop((prev: Crop) => ({...prev, width: ref.style.width, height: ref.style.height, ...position }))}
+            onResizeStop={
+                (_, __, ref, ___, position) => setCrop((prev: Crop) => ({...prev, width: parseInt(ref.style.width.replace("px", "")), height: parseInt(ref.style.height.replace("px", "")), ...position }))
+            }
             enableResizing={{ top: true, right: true, bottom: true, left: true, topRight: true, bottomRight: true, bottomLeft: true, topLeft: true }}
         >
             <div className="relative w-full h-full border border-white shadow-[0_0_0_9999px_rgba(0,0,0,0.25)]">

@@ -14,7 +14,7 @@ import { getDisplayedVideoRect } from "@/lib/functions/videoCrop";
 
   const VideoCropper = forwardRef(({ videoUrl, title }: Props, ref) => {
     const [ready, setReady] = useState<boolean>(false);
-    const [cssVideoSize, setCssVideoSize] = useState<VideoSize>({ width: 0, height: 0 });
+    const [videoSize, setVideoSize] = useState<VideoSize>({ width: 0, height: 0 });
     const [crop, setCrop] = useState<Crop>({ width: 200, height: 200, x: 0, y: 0 });
 
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -22,9 +22,9 @@ import { getDisplayedVideoRect } from "@/lib/functions/videoCrop";
     const ffmpegRef = useRef(new FFmpeg());
 
     const onLoadedMetadata = () => {
-      if(!videoRef.current || !videoContainerRef.current) return;
-      const rect = videoContainerRef.current.getBoundingClientRect();
-      setCssVideoSize({ width: rect.width, height: rect.height });
+      if(!videoRef.current) return;
+      const rect = videoRef.current.getBoundingClientRect();
+      setVideoSize({ width: rect.width, height: rect.height });
     }
 
     const cropVideo = async () => {
@@ -33,16 +33,37 @@ import { getDisplayedVideoRect } from "@/lib/functions/videoCrop";
 
       ffmpeg.writeFile("input.mp4", await fetchFile(videoUrl));
 
-      const { videoWidth, videoHeight, videoOffsetX, videoOffsetY } = getDisplayedVideoRect(videoRef.current!, videoContainerRef.current!);
-
       const video = videoRef.current!;
-      const scaleX = video.videoWidth / videoWidth;
-      const scaleY = video.videoHeight / videoHeight;
+      const Kw = video.videoWidth / video.clientWidth;  // width video ratio (actual video width / displayed width)
+      const Kh = video.videoHeight / video.clientHeight;  // height video ratio (actual video height / displayed height)
+      const { videoOffsetX, videoOffsetY } = getDisplayedVideoRect(video, videoContainerRef.current!);
 
-      const cx = Math.ceil(crop.x - videoOffsetX) * videoOffsetX;
-      const cy = Math.ceil(crop.y - videoOffsetY) * videoOffsetY;
-      const cw = Math.ceil(crop.width * scaleX);
-      const ch = Math.ceil(crop.height * scaleY);
+      const cw = Kw * crop.width;
+      const ch = Kh * crop.height;
+      const cx = Kw * crop.x - videoOffsetX;
+      const cy = Kh * crop.y - videoOffsetY;
+
+      console.log({
+        containerclientWidth: videoContainerRef.current?.clientWidth, 
+        containerclientHeight: videoContainerRef.current?.clientHeight,
+        videoclientHeight: video.clientHeight,
+        videoclientWidth: video.clientWidth,
+        videoOffsetX,
+        videoOffsetY,
+        cropX: crop.x,
+        cropY: crop.y,
+        Kw,
+        Kh,
+        cropWidth: crop.width,
+        cropHeight: crop.height,
+        videoWidth: video.videoWidth,
+        videoHeight: video.videoHeight,
+        CSSVideoWidth: videoSize.width,
+        CssVideoHeight: videoSize.height,
+        crop: {
+          cw, ch, cx, cy
+        }
+      });
 
       await ffmpeg.exec([
         "-i", "input.mp4",
@@ -64,7 +85,7 @@ import { getDisplayedVideoRect } from "@/lib/functions/videoCrop";
 
     useEffect(() => {
       if (videoContainerRef.current) {
-        setCssVideoSize({ width: videoContainerRef.current.clientWidth, height: videoContainerRef.current.clientHeight });
+        setVideoSize({ width: videoContainerRef.current.clientWidth, height: videoContainerRef.current.clientHeight });
       }
 
       const load = async () => {
@@ -85,11 +106,11 @@ import { getDisplayedVideoRect } from "@/lib/functions/videoCrop";
         <video
           ref={videoRef}
           src={videoUrl}
-          className="w-full h-full"
+          className="max-w-full max-h-full mx-auto my-auto object-contain"
           onLoadedMetadata={onLoadedMetadata}
         />
         <div className="overlay"></div>
-        <CropBox crop={crop} setCrop={setCrop} videoWidth={cssVideoSize.width} videoHeight={cssVideoSize.height} />
+        <CropBox crop={crop} setCrop={setCrop} videoWidth={videoSize.width} videoHeight={videoSize.height} />
       </div>
     );
   });
