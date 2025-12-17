@@ -43,28 +43,6 @@ import { getDisplayedVideoRect } from "@/lib/functions/videoCrop";
       const cx = Kw * crop.x - videoOffsetX;
       const cy = Kh * crop.y - videoOffsetY;
 
-      console.log({
-        containerclientWidth: videoContainerRef.current?.clientWidth, 
-        containerclientHeight: videoContainerRef.current?.clientHeight,
-        videoclientHeight: video.clientHeight,
-        videoclientWidth: video.clientWidth,
-        videoOffsetX,
-        videoOffsetY,
-        cropX: crop.x,
-        cropY: crop.y,
-        Kw,
-        Kh,
-        cropWidth: crop.width,
-        cropHeight: crop.height,
-        videoWidth: video.videoWidth,
-        videoHeight: video.videoHeight,
-        CSSVideoWidth: videoSize.width,
-        CssVideoHeight: videoSize.height,
-        crop: {
-          cw, ch, cx, cy
-        }
-      });
-
       await ffmpeg.exec([
         "-i", "input.mp4",
         "-vf", `crop=${cw}:${ch}:${cx}:${cy}`,
