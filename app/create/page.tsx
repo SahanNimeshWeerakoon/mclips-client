@@ -27,26 +27,32 @@ export default function Create() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-      e.preventDefault();
-      try {
-        const formData = new FormData();
-        formData.append("name", inputs.name);
-        formData.append("description", inputs.description);
-        formData.append("video", inputs.video as Blob);
-        formData.append("genres", JSON.stringify(selectedGenres));
+    e.preventDefault();
+    if(!inputs.video) return;
 
-        const res = await fetch(`http://20.193.147.237:8080/clips/create`, {
-          method: "POST",
-          body: formData,
-        });
+    const formData = new FormData();
+    formData.append("name", inputs.name);
+    formData.append("description", inputs.description);
+    formData.append("video", inputs.video as Blob);
+    formData.append("genres", JSON.stringify(selectedGenres));
 
-      } catch(err) {
-      }
-      // Handle form submission logic here
+    let uploadRes: any = await fetch('/api/video/create', {
+      method: 'POST',
+      body: formData,
+    });
+
+    uploadRes = await uploadRes.json();
+
+    if(!uploadRes.success) {
+      alert("Something went wrong!");
+    } else {
+      alert("Video uploaded successfully!");
+      location.reload();
+    }
   }
 
   return (
-    <section className="flex justify-center items-center min-h-screen bg-gray-50">
+    <section className="flex justify-center pt-10 min-h-screen bg-gray-50">
       <div className="bg-transparent rounded-2xl p-8 w-[30%]">
         <h1 className="text-3xl font-bold mb-8 text-center">
           <span className="text-primary">Create</span>{" "}
