@@ -1,44 +1,55 @@
 import { siteConfig } from "@/config/site";
-import { Video, SearchParams } from "@/types/videos";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Video } from "@/types/videos";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 export type VideoState = {
-    page: number;
-    searchResults: Video[];
-    keyword?: string;
-    selectedGenres: string[];
-    listedGenres: string[];
+    videos: Video[];
+    loading: boolean;
 }
 
 const initialState: VideoState = {
-    page: 1,
-    searchResults: [],
-    keyword: "",
-    selectedGenres: [],
-    listedGenres: siteConfig.genres
+    videos: [],
+    loading: false
 }
+
+export const fetchVideos = createAsyncThunk(
+    "videos/fetch",
+    async (_, { getState }) => {
+        const { keyword, selectedGenres } = (getState() as RootState).search;
+
+        const params = new URLSearchParams({
+            keyword: keyword || "",
+            genres: selectedGenres.join(",") || ""
+        });
+
+        const res = await fetch(`/api/video/search?${params}`);
+        return await res.json();
+    }
+);
 
 const videoSlice = createSlice({
     name: "video",
     initialState,
     reducers: {
-        setSearchResults(state, action: PayloadAction<Video[]>) {
-            state.searchResults = action.payload;
-            state.page = state.page + 1;
-        },
-        setKeyword(state, action: PayloadAction<string>) {
-            state.keyword = action.payload;
-        },
-        setGenre(state, action: PayloadAction<string>) {
-            state.listedGenres = state.listedGenres?.filter(genre => genre !== action.payload);
-            state.selectedGenres?.push(action.payload);
-        },
-        removeGenre(state, action: PayloadAction<string>) {
-            state.selectedGenres = state.selectedGenres?.filter(genre => genre !== action.payload);
-            state.listedGenres?.push(action.payload);
+        setVideos(state, action: PayloadAction<Video[]>) {
+            state.videos = [...state.videos, ...action.payload];
         }
+    },
+    extraReducers: builder => {
+        builder
+            .addCase(fetchVideos.pending, state => {
+                state.loading = true;
+            })
+            .addCase(fetchVideos.fulfilled, (state, action) => {
+                state.videos = [...state.videos, ...action.payload.data];
+                state.loading = false;
+            })
+            .addCase(fetchVideos.rejected, state => {
+                state.loading = false;
+            });
     }
 });
 
-export const { setSearchResults, setKeyword, setGenre, removeGenre } = videoSlice.actions;
+export const { setVideos } = videoSlice.actions;
 export default videoSlice.reducer;

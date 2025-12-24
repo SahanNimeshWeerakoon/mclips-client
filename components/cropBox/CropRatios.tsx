@@ -2,7 +2,7 @@
 import { useDispatch } from "react-redux";
 
 import { AppDispatch } from "@/store/store";
-import { setCropRatio } from "@/store/cropSlice";
+import { setCropRatio } from "@/store/slices/cropSlice";
 
 export default function CropRatios() {
     const dispatch = useDispatch<AppDispatch>();

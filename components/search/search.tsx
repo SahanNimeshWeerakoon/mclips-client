@@ -6,24 +6,31 @@ import {
   DropdownMenu,
   DropdownItem
 } from "@heroui/dropdown";
+import { useEffect } from "react";
 import { Input } from '@heroui/input'
 import { Button } from "@heroui/button";
-import { useDispatch, useSelector } from "react-redux";
-import { button as buttonStyles, input as inputStyles } from "@heroui/theme";
+import { useSelector } from "react-redux";
+import { button as buttonStyles } from "@heroui/theme";
 
+import { RootState } from "@/store/store";
 import { SelectedGenre } from "../selectedGenre";
 import { CaretDownIcon } from "@/components/icons";
-import { removeGenre, setGenre } from "@/store/slices/videoSlice";
-import { RootState } from "@/store/store";
+import { removeGenre, setGenre } from "@/store/slices/searchSlice";
+import { fetchVideos } from "@/store/slices/videoSlice";
+import { useAppDispatch } from "@/store/hooks";
 
 export default function Search() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const {selectedGenres, listedGenres} = useSelector((state: RootState) => state.video);
+  const {selectedGenres, listedGenres, keyword} = useSelector((state: RootState) => state.search);
 
   const handleGenreSelect = (value: string) => dispatch(setGenre(value));
   const handleGenreDeSelect = (value: string) => dispatch(removeGenre(value));
-  
+
+  useEffect(() => {
+    dispatch(fetchVideos());
+  }, [keyword, selectedGenres]);
+
   return (
     <section className="container mx-auto">
       <div className={`flex gap-10 ${!selectedGenres.length && 'items-center mb-5'}`}>
@@ -31,10 +38,10 @@ export default function Search() {
           <DropdownTrigger>
             <Button
               className={buttonStyles({
-                color: "primary",
+                size: "lg",
                 radius: "full",
-                variant: "bordered",
-                size: "lg"
+                color: "primary",
+                variant: "bordered"
               })}
               endContent={<CaretDownIcon className="text-primary w-20 h-20" />}
             >
@@ -45,22 +52,22 @@ export default function Search() {
               aria-label="Static Actions"
               selectionMode="multiple"
               onSelectionChange={(keys) => {
-                  const value = Array.from(keys)[0] as string;
-                  handleGenreSelect(value);
+                const value = Array.from(keys)[0] as string;
+                handleGenreSelect(value);
               }}
             >
               {listedGenres.map((genre: string) => (
-                  <DropdownItem key={genre}>{genre}</DropdownItem>
+                <DropdownItem key={genre}>{genre}</DropdownItem>
               ))}
             </DropdownMenu>
         </Dropdown>
         <div className={`w-full ${!selectedGenres.length && 'flex items-center'}`}>
             <Input
-                label="Search"
-                variant="bordered"
                 type="text"
                 radius="full"
+                label="Search"
                 color="primary"
+                variant="bordered"
             />
             <div className="flex items-center justify-start mt-3 flex-wrap gap-2 mb-3">
                 {selectedGenres.map(itm => <span key={itm}><SelectedGenre handleClick={() => handleGenreDeSelect(itm)} value={itm} /></span>)}
