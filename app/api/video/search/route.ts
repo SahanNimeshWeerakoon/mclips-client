@@ -5,10 +5,37 @@ export async function GET(request: Request) {
     try {
         const {searchParams} = new URL(request.url);
         const keyword = searchParams.get("keyword") || "";
-        const genres = searchParams.get("genres") || "";
+        let genres: string | string[] = searchParams.get("genres") || "";
+
+        genres = genres ? genres.split(",") : [];
+        
         const database = await db();
         const collection = database.collection("videos");
-        const videos = await collection.find({}).toArray();
+
+        const query: any = {};
+
+        if(keyword) {
+            query.$or = [
+                { title: { $regex: keyword, $options: "i" } },
+                { description: { $regex: keyword, $options: "i" } },
+            ]
+        }
+
+        if(genres.length) {
+            const combinedGenres = genres.map(genre => ({ genres: { $regex: genre, $options: "i" } }));
+
+            if(query.$or) {
+                query.$and = [
+                    { $or: query.$or },
+                    { $or: combinedGenres }
+                ];
+                delete query.$or;
+            } else {
+                query.$or = combinedGenres;
+            }
+        }
+
+        const videos = await collection.find(query).toArray();
 
         return NextResponse.json(
             {success: true, data: videos },

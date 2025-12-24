@@ -2,9 +2,9 @@
 
 import {
   Dropdown,
-  DropdownTrigger,
+  DropdownItem,
   DropdownMenu,
-  DropdownItem
+  DropdownTrigger,
 } from "@heroui/dropdown";
 import { useEffect } from "react";
 import { Input } from '@heroui/input'
@@ -13,11 +13,11 @@ import { useSelector } from "react-redux";
 import { button as buttonStyles } from "@heroui/theme";
 
 import { RootState } from "@/store/store";
+import { useAppDispatch } from "@/store/hooks";
 import { SelectedGenre } from "../selectedGenre";
 import { CaretDownIcon } from "@/components/icons";
-import { removeGenre, setGenre } from "@/store/slices/searchSlice";
 import { fetchVideos } from "@/store/slices/videoSlice";
-import { useAppDispatch } from "@/store/hooks";
+import { removeGenre, setGenre } from "@/store/slices/searchSlice";
 
 export default function Search() {
   const dispatch = useAppDispatch();
