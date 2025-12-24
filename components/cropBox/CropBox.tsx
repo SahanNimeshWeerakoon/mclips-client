@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Rnd } from 'react-rnd'
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
-import { Crop } from '@/types/clips';
+import { Crop } from '@/types/videos';
 
 interface Props {
     videoHeight: number;

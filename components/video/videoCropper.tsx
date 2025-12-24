@@ -4,7 +4,7 @@
   import { fetchFile } from "@ffmpeg/util"
 
   import CropBox from "@/components/cropBox/CropBox";
-import { Crop, VideoSize } from "@/types/clips";
+import { Crop, VideoSize } from "@/types/videos";
 import { getDisplayedVideoRect } from "@/lib/functions/videoCrop";
 
   interface Props {

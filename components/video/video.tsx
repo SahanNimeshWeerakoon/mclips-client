@@ -14,7 +14,7 @@ import {
 import { Button } from "@heroui/button";
 import VideoCropper from "./VideoCropper";
 import CropRatios from "../cropBox/CropRatios";
-import { VideoCropperHandle } from "@/types/clips";
+import { VideoCropperHandle } from "@/types/videos";
 
 interface VideoProps {
   src: string;        // video file URL

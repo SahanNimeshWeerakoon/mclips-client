@@ -45,16 +45,16 @@ export default function Search() {
             </Button>
           </DropdownTrigger>
             <DropdownMenu
-                aria-label="Static Actions"
-                selectionMode="multiple"
-                onSelectionChange={(keys) => {
-                    const value = Array.from(keys)[0] as string;
-                    handleGenreSelect(value);
-                }}
+              aria-label="Static Actions"
+              selectionMode="multiple"
+              onSelectionChange={(keys) => {
+                  const value = Array.from(keys)[0] as string;
+                  handleGenreSelect(value);
+              }}
             >
-                    {genres.map((genre) => (
-                        <DropdownItem key={genre}>{genre}</DropdownItem>
-                    ))}
+              {genres.map((genre) => (
+                  <DropdownItem key={genre}>{genre}</DropdownItem>
+              ))}
             </DropdownMenu>
         </Dropdown>
         <div className={`w-full ${!selectedGenres.length && 'flex items-center'}`}>

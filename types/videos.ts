@@ -1,9 +1,13 @@
-export type Clip = {
+export type Video = {
     id?: string;
     name: string;
     description?: string;
     video: string;
     genres?: string[];
+    thumbnail?: string;
+    createdAt?: Date;
+    downloadCount?: number;
+    viewsCount?: number;
 }
 
 export type VideoSize = {
@@ -18,4 +22,9 @@ export type Crop = VideoSize & {
 
 export interface VideoCropperHandle {
     cropVideo: () => void;
+}
+
+export type SearchParams = {
+    keyword?: string;
+    genres?: string[];
 }
