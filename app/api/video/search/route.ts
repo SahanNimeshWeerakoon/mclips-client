@@ -4,11 +4,11 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
     try {
         const database = await db();
-        const collection = database.collection("clips");
-        const clips = await collection.find({}).toArray();
+        const collection = database.collection("videos");
+        const videos = await collection.find({}).toArray();
 
         return NextResponse.json(
-            {success: true, data: clips },
+            {success: true, data: videos },
             { status: 200 } );
     } catch(err) {
         return NextResponse.json(

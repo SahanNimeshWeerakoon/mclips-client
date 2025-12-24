@@ -26,15 +26,50 @@ export default function Create() {
     setInputs((prev: any) => ({ ...prev, [name]: value }));
   }
 
+  const getFirstFrameAsThumbnail = (file: File): Promise<Blob> => {
+    return new Promise((res, rej) => {
+        const video = document.createElement('video');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        if(!ctx) return rej("Could not get canvas context");
+
+        video.preload = 'metadata';
+        video.muted = true;
+        video.src = URL.createObjectURL(file);
+
+        video.onloadeddata = () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob((blob) => {
+                URL.revokeObjectURL(video.src);
+                if(!blob) return rej("Could not get thumbnail");
+                else return res(blob);
+            }, "image/jpeg", 0.85);
+        }
+
+        video.onerror = (error) => {
+            URL.revokeObjectURL(video.src);
+            return rej("Error loading video");
+        }
+    });
+}
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if(!inputs.video) return;
+
+    const thumbnail = await getFirstFrameAsThumbnail(inputs.video);
 
     const formData = new FormData();
     formData.append("name", inputs.name);
     formData.append("description", inputs.description);
     formData.append("video", inputs.video as Blob);
     formData.append("genres", JSON.stringify(selectedGenres));
+    formData.append("thumbnail", thumbnail, "thumbnail.jpg");
 
     let uploadRes: any = await fetch('/api/video/create', {
       method: 'POST',
@@ -58,21 +93,15 @@ export default function Create() {
           <span className="text-primary">Create</span>{" "}
           <span className="text-default-900">Video</span>
         </h1>
-
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {/* Movie Name */}
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-700">Movie Name</label>
             <Input type="text" variant="bordered" size="lg" placeholder="Enter movie name" onValueChange={(value: string) => handleInputChange(value, "name")} />
           </div>
-
-          {/* Description */}
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-700">Description</label>
             <Input type="text" variant="bordered" size="lg" placeholder="Enter description" onValueChange={(value: string) => handleInputChange(value, "description")} />
           </div>
-
-          {/* Genre Dropdown */}
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-700">Genre</label>
             <Dropdown>
@@ -106,8 +135,6 @@ export default function Create() {
                     {selectedGenres.map(itm => <span key={itm}><SelectedGenre handleClick={() => handleGenreDeSelect(itm)} value={itm} /></span>)}
                 </div>
           </div>
-
-          {/* Video Uploader */}
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-700">Upload Video</label>
             <input
@@ -119,8 +146,6 @@ export default function Create() {
               onChange={(e) => handleInputChange(e.target.files ? e.target.files[0] : null, "video")}
             />
           </div>
-
-          {/* Submit Button */}
           <div className="flex justify-center">
             <Button color="primary" type="submit" size="lg" className="w-[50%]">
                 Upload

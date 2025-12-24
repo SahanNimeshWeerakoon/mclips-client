@@ -37,12 +37,10 @@ export default function SignIn() {
         backgroundPosition: "center",
       }}
     >
-      {/* Left side - Logo */}
       <div className="flex-1">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white"></h1>
       </div>
 
-      {/* Right side - Sign in form */}
       <div className="w-[80%] lg:w-[30%] min-w-[400px]">
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-12 py-16">
           <div className="flex justify-between items-start mb-10">
@@ -60,7 +58,6 @@ export default function SignIn() {
             </div>
           </div>
 
-          {/* Google Sign In Button */}
           <button
             onClick={handleGoogleSignIn}
             className="w-full mb-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 py-4 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors text-base"
@@ -69,7 +66,6 @@ export default function SignIn() {
             Sign in with Google
           </button>
 
-          {/* Sign in inputs */}
           <div className="mb-6">
             <label className="block text-base font-medium mb-3 text-gray-700 dark:text-gray-300">
               Enter your username or email address

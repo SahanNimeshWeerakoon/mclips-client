@@ -9,16 +9,19 @@ export async function POST(request: Request) {
         const description = formData.get("description") as string;
         const video = formData.get("video") as File;
         const genres = formData.get("genres") as string;
+        const thumbnail = formData.get("thumbnail") as File;
 
-        const { uploadUrl, key } = await getUploadSignedUrl(video.name, video.type); 
+        const videoUpload = await getUploadSignedUrl(video.name, video.type);
+        const thumbnailUpload = await getUploadSignedUrl(thumbnail.name, thumbnail.type);
         
-        const res = await uploadToS3(uploadUrl, video);
+        await uploadToS3(videoUpload.uploadUrl, video);
+        const res = await uploadToS3(thumbnailUpload.uploadUrl, thumbnail);
 
         if(res.status == 200) {
-            const result = await createVideoRecordInMongo(key, name, genres, description);
+            const result = await createVideoRecordInMongo(videoUpload.key, name, genres, description, thumbnailUpload.key);
             
             return NextResponse.json(
-                { success: true, message: "Video uploaded successfully", data: { key, id: result.insertedId } },
+                { success: true, message: "Video uploaded successfully", data: { key: videoUpload.key, id: result.insertedId } },
                 { status: 200 }
             );
         } else {

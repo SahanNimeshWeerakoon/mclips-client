@@ -23,7 +23,6 @@ interface VideoProps {
 }
 
 export const Video = ({ src, thumbnail, title }: VideoProps) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const videoCropperRef = useRef<VideoCropperHandle>(null);
   const [outputUrl, setOutputUrl] = useState<string | null>(null);
 
@@ -32,32 +31,21 @@ export const Video = ({ src, thumbnail, title }: VideoProps) => {
   const open = () => setIsOpen(true);
   const close = () => setIsOpen(false);
 
-  const handleMouseEnter = () => {
-    videoRef.current?.play();
-  };
-
-  const handleMouseLeave = () => {
-    videoRef.current?.pause();
-    videoRef.current!.currentTime = 0; // reset to start
-  };
-
   return (
     <>
       <div className="flex flex-col w-64">
         <a
           href="#"
           onClick={open}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
           className="relative w-full h-36 overflow-hidden rounded-lg cursor-pointer"
         >
           <video
-            ref={videoRef}
-            src={src}
-            poster={thumbnail}
-            className="w-full h-full object-cover"
             muted
+            autoPlay
+            playsInline
             loop
+            src={src}
+            className="w-full h-full object-cover"
           />
         </a>
         <div className="flex items-center justify-between">

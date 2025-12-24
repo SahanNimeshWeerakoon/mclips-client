@@ -67,7 +67,7 @@ export async function uploadToS3(uploadUrl: string, video: any) {
     }
 }
 
-export async function createVideoRecordInMongo(key: string, name: string, genres: string, description: string,) {
+export async function createVideoRecordInMongo(key: string, name: string, genres: string, description: string, thumbnailKey: string) {
     try {
         const database = await db();
         const result = await database.collection("videos").insertOne({
@@ -75,6 +75,10 @@ export async function createVideoRecordInMongo(key: string, name: string, genres
             name,
             genres,
             description,
+            thumbnailKey,
+            viewCount: 0,
+            downloadCount: 0,
+            createdAt: new Date(),
         });
     
         return result;
