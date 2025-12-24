@@ -6,27 +6,24 @@ import {
   DropdownMenu,
   DropdownItem
 } from "@heroui/dropdown";
-import { useState } from "react";
 import { Input } from '@heroui/input'
 import { Button } from "@heroui/button";
+import { useDispatch, useSelector } from "react-redux";
 import { button as buttonStyles, input as inputStyles } from "@heroui/theme";
 
-import { siteConfig } from "@/config/site";
 import { SelectedGenre } from "../selectedGenre";
 import { CaretDownIcon } from "@/components/icons";
+import { removeGenre, setGenre } from "@/store/slices/videoSlice";
+import { RootState } from "@/store/store";
 
 export default function Search() {
-    const [genres, setGenres] = useState<string[]>(siteConfig.genres);
-    const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
+  const dispatch = useDispatch();
 
-    const handleGenreSelect = (value: string) => {
-        setSelectedGenres(prev => [...prev, value]);
-        setGenres(prev => prev.filter(genre => genre !== value));
-    }
-    const handleGenreDeSelect = (value: string) => {
-        setSelectedGenres(prev => prev.filter(genre => genre !== value));
-        setGenres(prev => [...prev, value]);
-    }
+  const {selectedGenres, listedGenres} = useSelector((state: RootState) => state.video);
+
+  const handleGenreSelect = (value: string) => dispatch(setGenre(value));
+  const handleGenreDeSelect = (value: string) => dispatch(removeGenre(value));
+  
   return (
     <section className="container mx-auto">
       <div className={`flex gap-10 ${!selectedGenres.length && 'items-center mb-5'}`}>
@@ -52,7 +49,7 @@ export default function Search() {
                   handleGenreSelect(value);
               }}
             >
-              {genres.map((genre) => (
+              {listedGenres.map((genre: string) => (
                   <DropdownItem key={genre}>{genre}</DropdownItem>
               ))}
             </DropdownMenu>

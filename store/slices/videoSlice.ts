@@ -1,16 +1,21 @@
+import { siteConfig } from "@/config/site";
 import { Video, SearchParams } from "@/types/videos";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type VideoState = {
+export type VideoState = {
     page: number;
     searchResults: Video[];
-    searchParams: SearchParams;
+    keyword?: string;
+    selectedGenres: string[];
+    listedGenres: string[];
 }
 
 const initialState: VideoState = {
     page: 1,
     searchResults: [],
-    searchParams: {}
+    keyword: "",
+    selectedGenres: [],
+    listedGenres: siteConfig.genres
 }
 
 const videoSlice = createSlice({
@@ -21,11 +26,19 @@ const videoSlice = createSlice({
             state.searchResults = action.payload;
             state.page = state.page + 1;
         },
-        setSearchParams(state, action: PayloadAction<SearchParams>) {
-            state.searchParams = action.payload;
+        setKeyword(state, action: PayloadAction<string>) {
+            state.keyword = action.payload;
+        },
+        setGenre(state, action: PayloadAction<string>) {
+            state.listedGenres = state.listedGenres?.filter(genre => genre !== action.payload);
+            state.selectedGenres?.push(action.payload);
+        },
+        removeGenre(state, action: PayloadAction<string>) {
+            state.selectedGenres = state.selectedGenres?.filter(genre => genre !== action.payload);
+            state.listedGenres?.push(action.payload);
         }
     }
 });
 
-export const { setSearchResults } = videoSlice.actions;
+export const { setSearchResults, setKeyword, setGenre, removeGenre } = videoSlice.actions;
 export default videoSlice.reducer;
