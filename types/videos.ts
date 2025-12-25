@@ -1,13 +1,14 @@
 export type Video = {
     _id?: string;
     name: string;
-    description?: string;
     video: string;
+    createdAt?: Date;
+    videoKey: string;
     genres?: string[];
     thumbnail?: string;
-    createdAt?: Date;
-    downloadCount?: number;
     viewsCount?: number;
+    description?: string;
+    downloadCount?: number;
 }
 
 export type VideoSize = {

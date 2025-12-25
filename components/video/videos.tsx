@@ -5,12 +5,21 @@ import { RootState } from "@/store/store";
 
 export const Videos = () => {
   const videos = useSelector((state: RootState) => state.video.videos);
-
+console.log(videos);
   return (
     <div className="flex flex-wrap justify-start items-center gap-5">
       {
         videos.length ?
-        videos.map(clip => <span key={clip._id+clip.name}><Video src={clip.video} thumbnail="/light-background.png" title={clip.name} /></span>) :
+        videos.map(clip => (
+          <span key={clip._id+clip.name}>
+            <Video
+              src={clip.video}
+              title={clip.name}
+              videoKey={clip.videoKey}
+              thumbnail="/light-background.png"
+            />
+          </span>
+        )) :
         <div className="text-center text-red">No clips found</div>}
     </div>
   );
