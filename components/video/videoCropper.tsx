@@ -6,16 +6,21 @@
   import CropBox from "@/components/cropBox/CropBox";
 import { Crop, VideoSize } from "@/types/videos";
 import { getDisplayedVideoRect } from "@/lib/functions/videoCrop";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
   interface Props {
-    videoUrl: string;
     title: string;
   }
 
-  const VideoCropper = forwardRef(({ videoUrl, title }: Props, ref) => {
+  const VideoCropper = forwardRef(({ title }: Props, ref) => {
     const [ready, setReady] = useState<boolean>(false);
     const [videoSize, setVideoSize] = useState<VideoSize>({ width: 0, height: 0 });
     const [crop, setCrop] = useState<Crop>({ width: 200, height: 200, x: 0, y: 0 });
+
+    const { selectedVideoSrc } = useSelector((state: RootState) => state.video);
+    
+    useEffect(() => {console.log("selectedVideoSrc", selectedVideoSrc)}, [selectedVideoSrc]);
 
     const videoRef = useRef<HTMLVideoElement>(null);
     const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -31,7 +36,7 @@ import { getDisplayedVideoRect } from "@/lib/functions/videoCrop";
       const ffmpeg = ffmpegRef.current;
       if(!ready) return;
 
-      ffmpeg.writeFile("input.mp4", await fetchFile(videoUrl));
+      ffmpeg.writeFile("input.mp4", await fetchFile(selectedVideoSrc));
 
       const video = videoRef.current!;
       const Kw = video.videoWidth / video.clientWidth;  // width video ratio (actual video width / displayed width)
@@ -81,12 +86,14 @@ import { getDisplayedVideoRect } from "@/lib/functions/videoCrop";
 
     return (
       <div className="cropper relative h-full overflow-hidden" ref={videoContainerRef}>
-        <video
-          ref={videoRef}
-          src={videoUrl}
-          className="max-w-full max-h-full mx-auto my-auto object-contain"
-          onLoadedMetadata={onLoadedMetadata}
-        />
+        {selectedVideoSrc && (
+          <video
+            ref={videoRef}
+            src={selectedVideoSrc}
+            className="max-w-full max-h-full mx-auto my-auto object-contain"
+            onLoadedMetadata={onLoadedMetadata}
+          />
+        )}
         <div className="overlay"></div>
         <CropBox crop={crop} setCrop={setCrop} videoWidth={videoSize.width} videoHeight={videoSize.height} />
       </div>

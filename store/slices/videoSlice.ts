@@ -6,11 +6,13 @@ import { RootState } from "../store";
 export type VideoState = {
     videos: Video[];
     loading: boolean;
+    selectedVideoSrc: string;
 }
 
 const initialState: VideoState = {
     videos: [],
-    loading: false
+    loading: false,
+    selectedVideoSrc: ""
 }
 
 export const fetchVideos = createAsyncThunk(
@@ -37,6 +39,9 @@ const videoSlice = createSlice({
         },
         appendVideos(state, action: PayloadAction<Video[]>) {
             state.videos = [...state.videos, ...action.payload];
+        },
+        setSelectedVideoSrc(state, action: PayloadAction<string>) {
+            state.selectedVideoSrc = action.payload;
         }
     },
     extraReducers: builder => {
@@ -54,5 +59,5 @@ const videoSlice = createSlice({
     }
 });
 
-export const { setVideos } = videoSlice.actions;
+export const { setVideos, appendVideos, setSelectedVideoSrc } = videoSlice.actions;
 export default videoSlice.reducer;

@@ -11,10 +11,10 @@ interface Props {
 export default function DownloadIcon({ videoKey, title }: Props) {
     const handleClick = async () => {
         const res = await fetch(`/api/video/download?key=${videoKey}`);
-        console.log(res.url);
+        const resData = await res.json();
 
         const a = document.createElement("a");
-        a.href = res.url;
+        a.href = resData.data;
         a.download = `${title}.mp4`
         document.body.appendChild(a);
         a.click();

@@ -1,22 +1,38 @@
 "use client";
 
-import { useRef } from "react";
-import { useState } from "react";
-import { VideoCropperHandle } from "@/types/videos";
+import { useState, useEffect } from "react";
 import ViewVideoModal from "./ViewVideoModal";
 import DownloadIcon from "./DownloadIcon";
 
+import { useAppDispatch } from "@/store/hooks";
+import { setSelectedVideoSrc } from "@/store/slices/videoSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+
 interface VideoProps {
-  src: string;        // video file URL
   title: string;
   videoKey: string;
   thumbnail: string;  // thumbnail image URL
 }
 
-export const Video = ({ src, thumbnail, title, videoKey }: VideoProps) => {
-  
+export const Video = ({ thumbnail, title, videoKey }: VideoProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const { selectedVideoSrc } = useSelector((state: RootState) => state.video);
+  const dispatch = useAppDispatch();
+
+  const fetchSignedUrl = async (selectedVideoKey: string) => {
+    if(selectedVideoKey) {
+      const res = await fetch(`/api/video/download?key=${selectedVideoKey}`);
+      const resData = await res.json();
+      dispatch(setSelectedVideoSrc(resData.data));
+    }
+  }
+
+  const handleVideoClick = (key: string) => {
+    fetchSignedUrl(key);
+    open();
+  }
   const open = () => setIsOpen(true);
   const close = () => setIsOpen(false);
 
@@ -25,17 +41,19 @@ export const Video = ({ src, thumbnail, title, videoKey }: VideoProps) => {
       <div className="flex flex-col w-64">
         <a
           href="#"
-          onClick={open}
+          onClick={() => handleVideoClick(videoKey)}
           className="relative w-full h-36 overflow-hidden rounded-lg cursor-pointer"
         >
-          <video
-            muted
-            autoPlay
-            playsInline
-            loop
-            src={src}
-            className="w-full h-full object-cover"
-          />
+          { selectedVideoSrc ?? (
+            <video
+              loop
+              muted
+              autoPlay
+              src={selectedVideoSrc}
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          ) }
         </a>
         <div className="flex items-center justify-between">
           <p className="mt-2 text-center font-medium">{title}</p>

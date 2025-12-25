@@ -1,9 +1,9 @@
 export type Video = {
+    key: string;
     _id?: string;
     name: string;
     video: string;
     createdAt?: Date;
-    videoKey: string;
     genres?: string[];
     thumbnail?: string;
     viewsCount?: number;

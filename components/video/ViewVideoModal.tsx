@@ -7,11 +7,11 @@ import {
   ModalBody,
   ModalFooter,
 } from "@heroui/modal";
+import { useRef, useState, useEffect } from "react";
 import { Button } from "@heroui/button";
 
 import VideoCropper from "./VideoCropper";
 import CropRatios from "../cropBox/CropRatios";
-import { useRef } from "react";
 import { VideoCropperHandle } from "@/types/videos";
 
 
@@ -21,7 +21,7 @@ interface Props {
     title: string;
 }
 
-const ViewVideoModal = ({ isOpen, setIsOpen, title }: Props) => {
+const ViewVideoModal = ({ isOpen, setIsOpen, title}: Props) => {
     
     const videoCropperRef = useRef<VideoCropperHandle>(null);
     
@@ -37,7 +37,7 @@ const ViewVideoModal = ({ isOpen, setIsOpen, title }: Props) => {
 
                 <ModalBody className="p-0">
                   <div className="w-full h-[80vh] overflow-y-scroll">
-                    <VideoCropper title={title} ref={videoCropperRef} videoUrl="/video.mp4" />
+                    <VideoCropper title={title} ref={videoCropperRef} />
                   </div>
                 </ModalBody>
 
