@@ -12,7 +12,7 @@ export default function DownloadIcon({ videoKey, title }: Props) {
     const handleClick = async () => {
         const res = await fetch(`/api/video/download?key=${videoKey}`);
         const resData = await res.json();
-
+        console.log("hutta", resData.data);
         const a = document.createElement("a");
         a.href = resData.data;
         a.download = `${title}.mp4`

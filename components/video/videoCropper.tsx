@@ -20,8 +20,6 @@ import { RootState } from "@/store/store";
 
     const { selectedVideoSrc } = useSelector((state: RootState) => state.video);
     
-    useEffect(() => {console.log("selectedVideoSrc", selectedVideoSrc)}, [selectedVideoSrc]);
-
     const videoRef = useRef<HTMLVideoElement>(null);
     const videoContainerRef = useRef<HTMLDivElement>(null);
     const ffmpegRef = useRef(new FFmpeg());
