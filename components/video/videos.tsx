@@ -1,26 +1,10 @@
 "use client"
-import { useEffect, useState } from "react";
-
 import { Video } from "./Video";
-import axiosInstance from "@/lib/axios";
-// import { useAppDispatch, useAppSelector } from "@/store/store";
-// import { setAllClips } from "@/store/clipSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 export const Videos = () => {
-  const [videos, setVideos] = useState<{_id: string; video: string; name: string;}[]>([]);
-  // const dispatch = useAppDispatch();
-  // const videos = useAppSelector(state => state.videos.videos);
-  useEffect(() => {
-    try {
-      const fetchVideos = async () => {
-        const response = await axiosInstance.get('/api/video/search');
-        // dispatch(setAllClips(response.data));
-        setVideos(response.data.data);
-      }
-      fetchVideos();
-    } catch(err) {
-    }
-  }, []);
+  const videos = useSelector((state: RootState) => state.video.videos);
 
   return (
     <div className="flex flex-wrap justify-start items-center gap-5">

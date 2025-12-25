@@ -33,6 +33,9 @@ const videoSlice = createSlice({
     initialState,
     reducers: {
         setVideos(state, action: PayloadAction<Video[]>) {
+            state.videos = action.payload;
+        },
+        appendVideos(state, action: PayloadAction<Video[]>) {
             state.videos = [...state.videos, ...action.payload];
         }
     },
@@ -42,7 +45,7 @@ const videoSlice = createSlice({
                 state.loading = true;
             })
             .addCase(fetchVideos.fulfilled, (state, action) => {
-                state.videos = [...state.videos, ...action.payload.data];
+                state.videos = action.payload.data;
                 state.loading = false;
             })
             .addCase(fetchVideos.rejected, state => {
