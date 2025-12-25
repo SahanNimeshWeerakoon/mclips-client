@@ -6,7 +6,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@heroui/dropdown";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Input } from '@heroui/input'
 import { Button } from "@heroui/button";
 import { useSelector } from "react-redux";
@@ -17,10 +17,11 @@ import { useAppDispatch } from "@/store/hooks";
 import { SelectedGenre } from "../selectedGenre";
 import { CaretDownIcon } from "@/components/icons";
 import { fetchVideos } from "@/store/slices/videoSlice";
-import { removeGenre, setGenre } from "@/store/slices/searchSlice";
+import { removeGenre, setGenre, setKeyword } from "@/store/slices/searchSlice";
 
 export default function Search() {
   const dispatch = useAppDispatch();
+  const [searchVal, setSearchVal] = useState<string>("");
 
   const {selectedGenres, listedGenres, keyword} = useSelector((state: RootState) => state.search);
 
@@ -30,6 +31,14 @@ export default function Search() {
   useEffect(() => {
     dispatch(fetchVideos());
   }, [keyword, selectedGenres]);
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      dispatch(setKeyword(searchVal));
+    }, 500);
+
+    return () => clearTimeout(id);
+  }, [searchVal]);
 
   return (
     <section className="container mx-auto">
@@ -68,6 +77,7 @@ export default function Search() {
                 label="Search"
                 color="primary"
                 variant="bordered"
+                onChange={(e) => setSearchVal(e.target.value)}
             />
             <div className="flex items-center justify-start mt-3 flex-wrap gap-2 mb-3">
                 {selectedGenres.map(itm => <span key={itm}><SelectedGenre handleClick={() => handleGenreDeSelect(itm)} value={itm} /></span>)}
