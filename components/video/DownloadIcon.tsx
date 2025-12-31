@@ -12,16 +12,16 @@ export default function DownloadIcon({ videoKey, title }: Props) {
     const handleClick = async () => {
         const res = await fetch(`/api/video/download?key=${videoKey}`);
         const resData = await res.json();
-        console.log("hutta", resData.data);
         const a = document.createElement("a");
         a.href = resData.data;
+        // a.href = "/video.mp4";
         a.download = `${title}.mp4`
         document.body.appendChild(a);
         a.click();
         a.remove();
     }
     return (
-        <Link onClick={handleClick}>
+        <Link onClick={handleClick} className="cursor-pointer">
             <Icon className="w-5 h-5" />
         </Link>
     );

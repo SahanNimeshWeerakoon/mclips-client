@@ -38,7 +38,12 @@ export default function Create() {
         video.muted = true;
         video.src = URL.createObjectURL(file);
 
-        video.onloadeddata = () => {
+        video.onloadedmetadata = () => {
+          const targetTime = Math.min(2, video.duration);
+          video.currentTime = targetTime;
+        }
+
+        video.onseeked = () => {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
 

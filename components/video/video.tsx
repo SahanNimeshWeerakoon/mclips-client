@@ -23,7 +23,7 @@ export const Video = ({ thumbnail, title, videoKey }: VideoProps) => {
 
   const fetchSignedUrl = async (selectedVideoKey: string) => {
     if(selectedVideoKey) {
-      const res = await fetch(`/api/video/download?key=${selectedVideoKey}`);
+      const res = await fetch(`/api/video/download?key=${selectedVideoKey}&title=${title}`);
       const resData = await res.json();
       dispatch(setSelectedVideoSrc(resData.data));
     }
