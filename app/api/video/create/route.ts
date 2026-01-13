@@ -11,8 +11,8 @@ export async function POST(request: Request) {
         const genres = formData.get("genres") as string;
         const thumbnail = formData.get("thumbnail") as File;
 
-        const videoUpload = await getUploadSignedUrl(video.name, video.type);
-        const thumbnailUpload = await getUploadSignedUrl(thumbnail.name, thumbnail.type);
+        const videoUpload = await getUploadSignedUrl(video.name, video.type, "videos");
+        const thumbnailUpload = await getUploadSignedUrl(thumbnail.name, thumbnail.type, "thumbnails");
         
         await uploadToS3(videoUpload.uploadUrl, video);
         const res = await uploadToS3(thumbnailUpload.uploadUrl, thumbnail);

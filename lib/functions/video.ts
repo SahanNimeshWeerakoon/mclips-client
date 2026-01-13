@@ -2,6 +2,7 @@ import db from '@/lib/mongodb'
 import { ObjectId } from 'mongodb';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { S3Folders } from '@/types/index';
 
 const s3 = new S3Client({
     region: process.env.AWS_REGION,
@@ -34,9 +35,9 @@ export async function increaseUserDownloadCountByOne(userIp: string) {
     return result;
 }
 
-export async function getUploadSignedUrl(fileName: string, fileType: string) {
+export async function getUploadSignedUrl(fileName: string, fileType: string, folder: S3Folders) {
     try {
-        const key = `videos/${Date.now()}_${fileName}`;
+        const key = `${folder}/${Date.now()}_${fileName}`;
     
         const command = new PutObjectCommand({
             Bucket: process.env.AWS_S3_BUCKET!,

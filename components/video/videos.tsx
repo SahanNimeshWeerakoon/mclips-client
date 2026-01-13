@@ -5,6 +5,7 @@ import { RootState } from "@/store/store";
 
 export const Videos = () => {
   const videos = useSelector((state: RootState) => state.video.videos);
+  console.log(videos);
   return (
     <div className="flex flex-wrap justify-start items-center gap-5">
       {
@@ -14,7 +15,7 @@ export const Videos = () => {
             <Video
               title={clip.name}
               videoKey={clip.key}
-              thumbnail="/light-background.png"
+              thumbnail={clip.thumbnailKey}
             />
           </span>
         )) :

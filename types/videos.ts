@@ -8,6 +8,7 @@ export type Video = {
     thumbnail?: string;
     viewsCount?: number;
     description?: string;
+    thumbnailKey: string;
     downloadCount?: number;
 }
 

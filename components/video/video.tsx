@@ -44,7 +44,7 @@ export const Video = ({ thumbnail, title, videoKey }: VideoProps) => {
           onClick={() => handleVideoClick(videoKey)}
           className="relative w-full h-36 overflow-hidden rounded-lg cursor-pointer"
         >
-          { selectedVideoSrc ?? (
+          {/* { selectedVideoSrc ?? (
             <video
               loop
               muted
@@ -53,7 +53,8 @@ export const Video = ({ thumbnail, title, videoKey }: VideoProps) => {
               playsInline
               className="w-full h-full object-cover"
             />
-          ) }
+          ) } */}
+          <img src={`https://d1yqiyolj9fcci.cloudfront.net/${thumbnail}`} />
         </a>
         <div className="flex items-center justify-between">
           <p className="mt-2 text-center font-medium">{title}</p>
