@@ -17,6 +17,7 @@ export default function Create() {
       setSelectedGenres(prev => [...prev, value]);
       setGenres(prev => prev.filter(genre => genre !== value));
   }
+
   const handleGenreDeSelect = (value: string) => {
       setSelectedGenres(prev => prev.filter(genre => genre !== value));
       setGenres(prev => [...prev, value]);
@@ -61,7 +62,7 @@ export default function Create() {
             return rej("Error loading video");
         }
     });
-}
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
